@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>St. Louis Bar & Grill</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: fadeIn 0.8s forwards;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #4b6cb7, #182848);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: colorShift 8s infinite alternate;
+    }
+    
+    @keyframes colorShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4b6cb7;
+    }
+    
+    #searchInput {
+      width: 100%;
+      padding: 12px 15px 12px 40px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background-color: #f3f4f6;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    #searchInput:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.3);
+    }
+    
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      background-color: #e5e7eb;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .filter-btn.active {
+      background-color: #4b6cb7;
+      color: white;
+    }
+    
+    .filter-btn:hover:not(.active) {
+      background-color: #d1d5db;
+    }
+    
+    .items-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    
+    .category {
+      margin-bottom: 20px;
+    }
+    
+    .category-header {
+      background: linear-gradient(90deg, #4b6cb7, #182848);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .item-count {
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    
+    .item-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+    }
+    
+    .item-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border-left: 5px solid #4b6cb7;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: slideIn 0.5s forwards;
+    }
+    
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .item-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .item-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1f2937;
+    }
+    
+    .item-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #4b5563;
+    }
+    
+    .shelf-life {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background-color: #e5e7eb;
+      font-weight: 500;
+    }
+    
+    .due-date {
+      font-weight: 600;
+    }
+    
+    .date-warning {
+      color: #b91c1c;
+    }
+    
+    .date-approaching {
+      color: #d97706;
+    }
+    
+    .date-good {
+      color: #047857;
+    }
+    
+    .no-results {
+      text-align: center;
+      color: #6b7280;
+      padding: 30px;
+      font-style: italic;
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    .current-date {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #4b5563;
+      font-weight: 500;
+    }
+    
+    /* Custom scrollbar */
+    .items-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .items-container::-webkit-scrollbar-track {
+      background: #f3f4f6;
+      border-radius: 10px;
+    }
+    
+    .items-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #4b6cb7, #182848);
+      border-radius: 10px;
+    }
+    
+    /* Animation delay for cards */
+    .item-card {
+      animation-delay: calc(0.05s * var(--i));
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .item-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Food Inventory Tracker</h1>
+    
+    <div class="current-date" id="currentDate"></div>
+    
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search for items...">
+    </div>
+    
+    <div class="filter-container" id="filterContainer">
+      <button class="filter-btn active" data-category="all">All Items</button>
+      <!-- Filters will be added dynamically -->
+    </div>
+    
+    <div class="items-container" id="itemsContainer">
+      <!-- Category sections will be added dynamically -->
+    </div>
+  </div>
+
+  <script>
+    // Current date for calculations
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    document.getElementById('currentDate').textContent = `Today: ${formattedDate}`;
+    
+    // Food items data with categories and shelf life
+    const foodItems = [
+      // Sauce Prep
+      { name: "Alfredo Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "BBQ Mayo", category: "Sauce Prep", shelfLife: "4 Days" },
+      { name: "Buffalo Ranch", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "Chipotle Santa Fe", category: "Sauce Prep", shelfLife: "4 Days" },
+      { name: "Chocolate Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
+      { name: "Creme Cheese Icing", category: "Sauce Prep", shelfLife: "5 Days" },
+      { name: "Pesto Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "Pizza Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "Ranch", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "Red Chili Curry Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
+      { name: "Spicy Louis Puree", category: "Sauce Prep", shelfLife: "5 Days" },
+      { name: "Sweet Chili Poppy", category: "Sauce Prep", shelfLife: "5 Days" },
+
+      // Veggie Prep
+      { name: "Cajun Relish", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Celery Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Chopped Broccoli", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Diced Green Chilies", category: "Veggie Prep", shelfLife: "3 Days" },
+      { name: "Diced Bell Peppers", category: "Veggie Prep", shelfLife: "3 Days" },
+      { name: "Diced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Diced Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Jalapeno Medallions", category: "Veggie Prep", shelfLife: "3 Days" },
+      { name: "Lemon Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Lettuce Blend", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Lime Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Pickled Carrots", category: "Veggie Prep", shelfLife: "3 Days" },
+      { name: "Pickled Jalapenos", category: "Veggie Prep", shelfLife: "3 Days" },
+      { name: "Shaved Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
+      { name: "Sliced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
+
+      // Cold Prep
+      { name: "Birthday Cake Splash", category: "Cold Prep", shelfLife: "7 Days" },
+      { name: "Black Bean Salad", category: "Cold Prep", shelfLife: "3 Days" },
+      { name: "Breakfast Potatoes", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Cheese Curd Sauce", category: "Cold Prep", shelfLife: "6 Days" },
+      { name: "Fruit & Vanilla Sorbet", category: "Cold Prep", shelfLife: "3 Days" },
+      { name: "Horseradish Beef", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Nacho Chips", category: "Cold Prep", shelfLife: "2 Days" },
+      { name: "Pepperoni Slices", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Queso", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Quinoa", category: "Cold Prep", shelfLife: "3 Days" },
+      { name: "Rice", category: "Cold Prep", shelfLife: "3 Days" },
+      { name: "Seasoned Fry Chips", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Seasoned Rice", category: "Cold Prep", shelfLife: "4 Days" },
+      { name: "Sriracha Chicken Salad", category: "Cold Prep", shelfLife: "2 Days" },
+
+      // Hot Prep
+      { name: "Broccoli Bites", category: "Hot Prep", shelfLife: "4 Days" },
+      { name: "Blackened Tilapia", category: "Hot Prep", shelfLife: "3 Days" },
+      { name: "Brisket", category: "Hot Prep", shelfLife: "3 Days" },
+      { name: "Pasta & Pesto Savonier", category: "Hot Prep", shelfLife: "4 Days" },
+      { name: "Curry", category: "Hot Prep", shelfLife: "3 Days" },
+      { name: "Nacho Beef", category: "Hot Prep", shelfLife: "2 Days" },
+      { name: "Nacho Chips", category: "Hot Prep", shelfLife: "2 Days" },
+      { name: "Pepperoni Slices", category: "Hot Prep", shelfLife: "4 Days" },
+      { name: "Queso Cheese", category: "Hot Prep", shelfLife: "4 Days" },
+      { name: "Seasoning Blend", category: "Hot Prep", shelfLife: "5 Days" },
+      { name: "Sliced Beef", category: "Hot Prep", shelfLife: "3 Days" },
+
+      // Portioning
+      { name: "Battered Chicken Cutlet", category: "Portioning", shelfLife: "Frozen" },
+      { name: "Battered Pickle Cutlet", category: "Portioning", shelfLife: "Frozen" },
+      { name: "Beef Patties", category: "Portioning", shelfLife: "2 Days" },
+      { name: "Blanched Vegetable", category: "Portioning", shelfLife: "3 Days" },
+      { name: "Boneless Wings", category: "Portioning", shelfLife: "Frozen" },
+      { name: "Calamari/Veggies", category: "Portioning", shelfLife: "2 Days" },
+      { name: "Cheese Curds", category: "Portioning", shelfLife: "6 Days" },
+      { name: "Cubic Cheese", category: "Portioning", shelfLife: "3 Days" },
+      { name: "Lattice Cut Veggies", category: "Portioning", shelfLife: "2 Days" },
+      { name: "Sliced Cheese", category: "Portioning", shelfLife: "6 Days" },
+      { name: "Pulled Beef/Veggie", category: "Portioning", shelfLife: "3 Days" },
+      { name: "Quinoa", category: "Portioning", shelfLife: "4 Days" },
+      { name: "Rico", category: "Portioning", shelfLife: "3 Days" },
+      { name: "Shredded Mozzarella", category: "Portioning", shelfLife: "3 Days" },
+      { name: "Sweet Potato Fries", category: "Portioning", shelfLife: "Frozen" },
+      { name: "Fajita Island Wraps", category: "Portioning", shelfLife: "Frozen" }
+    ];
+    
+    // Function to calculate due date based on shelf life
+    function calculateDueDate(shelfLife) {
+      if (shelfLife.toLowerCase().includes('frozen') || isNaN(parseInt(shelfLife))) {
+        return shelfLife; // Return as is if it's "Frozen" or not a number
+      }
+      
+      const days = parseInt(shelfLife);
+      const dueDate = new Date(today);
+      dueDate.setDate(dueDate.getDate() + days);
+      
+      return dueDate.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric'
+      });
+    }
+    
+    // Function to determine date status for styling
+    function getDateStatus(shelfLife) {
+      if (shelfLife.toLowerCase().includes('frozen') || isNaN(parseInt(shelfLife))) {
+        return 'date-good';
+      }
+      
+      const days = parseInt(shelfLife);
+      if (days <= 2) {
+        return 'date-warning';
+      } else if (days <= 4) {
+        return 'date-approaching';
+      } else {
+        return 'date-good';
+      }
+    }
+    
+    // Get unique categories
+    const categories = ['All Items', ...new Set(foodItems.map(item => item.category))];
+    
+    // Add filter buttons
+    const filterContainer = document.getElementById('filterContainer');
+    categories.forEach((category, index) => {
+      if (index === 0) return; // Skip "All Items" as it's already added
+      
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = category;
+      btn.dataset.category = category;
+      filterContainer.appendChild(btn);
+    });
+    
+    // Function to render items by category
+    function renderItems(filter = 'all', searchTerm = '') {
+      const itemsContainer = document.getElementById('itemsContainer');
+      itemsContainer.innerHTML = '';
+      
+      // Filter items by search term and category
+      let filteredItems = foodItems;
+      
+      if (searchTerm) {
+        filteredItems = filteredItems.filter(item => 
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
+      
+      if (filter !== 'all') {
+        filteredItems = filteredItems.filter(item => item.category === filter);
+      }
+      
+      if (filteredItems.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.textContent = 'No items found matching your search.';
+        itemsContainer.appendChild(noResults);
+        return;
+      }
+      
+      // Group items by category
+      const groupedItems = {};
+      filteredItems.forEach(item => {
+        if (!groupedItems[item.category]) {
+          groupedItems[item.category] = [];
+        }
+        groupedItems[item.category].push(item);
+      });
+      
+      // Render each category
+      Object.keys(groupedItems).sort().forEach(category => {
+        const categoryItems = groupedItems[category];
+        
+        const categorySection = document.createElement('div');
+        categorySection.className = 'category';
+        
+        const categoryHeader = document.createElement('div');
+        categoryHeader.className = 'category-header';
+        categoryHeader.innerHTML = `
+          <span>${category}</span>
+          <span class="item-count">${categoryItems.length} items</span>
+        `;
+        
+        const itemList = document.createElement('div');
+        itemList.className = 'item-list';
+        
+        categoryItems.forEach((item, index) => {
+          const dueDate = calculateDueDate(item.shelfLife);
+          const dateStatus = getDateStatus(item.shelfLife);
+          
+          const itemCard = document.createElement('div');
+          itemCard.className = 'item-card';
+          itemCard.style.setProperty('--i', index + 1);
+          
+          itemCard.innerHTML = `
+            <div class="item-name">${item.name}</div>
+            <div class="item-info">
+              <span class="shelf-life">${item.shelfLife}</span>
+              <span class="due-date ${dateStatus}">Due: ${dueDate}</span>
+            </div>
+          `;
+          
+          itemList.appendChild(itemCard);
+        });
+        
+        categorySection.appendChild(categoryHeader);
+        categorySection.appendChild(itemList);
+        itemsContainer.appendChild(categorySection);
+      });
+    }
+    
+    // Initialize the display
+    renderItems();
+    
+    // Event listeners for filtering
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const category = btn.dataset.category;
+        const searchTerm = document.getElementById('searchInput').value;
+        renderItems(category, searchTerm);
+      });
+    });
+    
+    // Event listener for search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const searchTerm = e.target.value;
+      const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
+      renderItems(activeCategory, searchTerm);
+    });
+  </script>
+</body>
+</html>
