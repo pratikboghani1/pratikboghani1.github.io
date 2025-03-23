@@ -151,6 +151,13 @@
       gap: 10px;
     }
     
+    .items-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 10px;
+      touch-action: pan-y; /* Allow vertical scrolling */
+    }
+
     .item-card {
       background-color: white;
       border-radius: 8px;
@@ -163,7 +170,7 @@
       animation: slideIn 0.5s forwards;
       position: relative;
       overflow: hidden;
-      touch-action: pan-x;
+      touch-action: pan-y; /* Allow vertical scrolling */
     }
     
     @keyframes slideIn {
