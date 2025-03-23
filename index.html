@@ -194,7 +194,8 @@
     
     .info-row {
       display: flex;
-      justify-content: space-between;
+      align-items: center; /* Align items vertically */
+      gap: 5px; /* Add a small gap between the label and value */
     }
     
     .today-date {
@@ -244,7 +245,17 @@
       color: #4b5563;
       font-weight: 500;
     }
-    
+    .info-row.today-due-row {
+      display: flex;
+      justify-content: flex-end; /* Align to the right */
+      gap: 20px; /* Add spacing between "Today" and "Due" */
+    }
+
+    .today-due-group {
+      display: flex;
+      align-items: center; /* Align label and value vertically */
+      gap: 5px; /* Add spacing between label and value */
+    }
     /* Custom scrollbar */
     .items-container::-webkit-scrollbar {
       width: 8px;
@@ -588,82 +599,91 @@
     // Food items data with categories and shelf life - now with unique IDs
     let foodItems = [
       // Sauce Prep
-      { id: 1, name: "Alfredo Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
+      { id: 1, name: "Alfredo Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
       { id: 2, name: "BBQ Mayo", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 3, name: "Buffalo Ranch", category: "Sauce Prep", shelfLife: "3 Days" },
-      { id: 4, name: "Chipotle Santa Fe", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 5, name: "Chocolate Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
-      { id: 6, name: "Creme Cheese Icing", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 7, name: "Pesto Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
-      { id: 8, name: "Pizza Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
-      { id: 9, name: "Ranch", category: "Sauce Prep", shelfLife: "3 Days" },
-      { id: 10, name: "Red Chili Curry Sauce", category: "Sauce Prep", shelfLife: "3 Days" },
-      { id: 11, name: "Spicy Louis Puree", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 12, name: "Sweet Chili Poppy", category: "Sauce Prep", shelfLife: "5 Days" },
+      { id: 3, name: "Buffalo Ranch", category: "Sauce Prep", shelfLife: "5 Days" },
+      { id: 4, name: "Chipotle Garlic dill", category: "Sauce Prep", shelfLife: "4 Days" },
+      { id: 5, name: "Chocolate Sauce", category: "Sauce Prep", shelfLife: "15 Days" },
+      { id: 6, name: "Creame Cheese Icing", category: "Sauce Prep", shelfLife: "7 Days" },
+      { id: 7, name: "Honey Cajun", category: "Sauce Prep", shelfLife: "8 Days" },
+      { id: 8, name: "Horseradish Aioli", category: "Sauce Prep", shelfLife: "4 Days" },
+      { id: 9, name: "Hot and honey", category: "Sauce Prep", shelfLife: "10 Days" },
+      { id: 10, name: "Pizza Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
+      { id: 11, name: "Raspberry Sauce", category: "Sauce Prep", shelfLife: "10 Days" },
+      { id: 12, name: "Red Thai Curry Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
+      { id: 13, name: "Rose Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
+      { id: 14, name: "Slider Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
+      { id: 15, name: "Spicy Garlic Parm", category: "Sauce Prep", shelfLife: "4 Days" },
+      { id: 16, name: "Sweet Chili Poppyseed", category: "Sauce Prep", shelfLife: "5 Days" },
 
       // Veggie Prep
-      { id: 13, name: "Cajun Relish", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 14, name: "Celery Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 15, name: "Chopped Broccoli", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 16, name: "Diced Green Chilies", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 17, name: "Diced Bell Peppers", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 18, name: "Diced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 19, name: "Diced Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 20, name: "Jalapeno Medallions", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 21, name: "Lemon Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 22, name: "Lettuce Blend", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 23, name: "Lime Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 24, name: "Pickled Carrots", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 25, name: "Pickled Jalapenos", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 26, name: "Shaved Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 27, name: "Sliced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 17, name: "Carrot Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 18, name: "Celery Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 19, name: "Chopped Romaine", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 20, name: "Diced Green Onions", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 21, name: "Diced Red Peppers", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 22, name: "Diced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 23, name: "Diced Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 24, name: "Julienne Mashrooms", category: "Veggie Prep", shelfLife: "3 Days" },
+      { id: 25, name: "Julienne Red Onions", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 26, name: "Lemon Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 27, name: "Lettuce Blend", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 28, name: "Lettuce Cups", category: "Veggie Prep", shelfLife: "3 Days" },
+      { id: 29, name: "Lime Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 30, name: "Shredded Carrots", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 31, name: "Shredded Iceberg", category: "Veggie Prep", shelfLife: "2 Days" },
+      { id: 32, name: "Sliced Cucumbers", category: "Veggie Prep", shelfLife: "3 Days" },
+      { id: 33, name: "Sliced Jalapenos", category: "Veggie Prep", shelfLife: "3 Days" },
+      { id: 34, name: "Sliced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
 
       // Cold Prep
-      { id: 28, name: "Birthday Cake Splash", category: "Cold Prep", shelfLife: "7 Days" },
-      { id: 29, name: "Black Bean Salad", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 30, name: "Breakfast Potatoes", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 31, name: "Cheese Curd Sauce", category: "Cold Prep", shelfLife: "6 Days" },
-      { id: 32, name: "Fruit & Vanilla Sorbet", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 33, name: "Horseradish Beef", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 34, name: "Nacho Chips", category: "Cold Prep", shelfLife: "2 Days" },
-      { id: 35, name: "Pepperoni Slices", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 36, name: "Queso", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 37, name: "Quinoa", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 38, name: "Rice", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 39, name: "Seasoned Fry Chips", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 40, name: "Seasoned Rice", category: "Cold Prep", shelfLife: "4 Days" },
-      { id: 41, name: "Sriracha Chicken Salad", category: "Cold Prep", shelfLife: "2 Days" },
+      { id: 35, name: "Birthday Cake Crumb", category: "Cold Prep", shelfLife: "5 Days" },
+      { id: 36, name: "Brownie Push-In", category: "Cold Prep", shelfLife: "7 Days" },
+      { id: 37, name: "Buttermilk Chicken Breast", category: "Cold Prep", shelfLife: "2 Days" },
+      { id: 38, name: "Buttermilk Chicken Tender", category: "Cold Prep", shelfLife: "2 Days" },
+      { id: 39, name: "Pickle Coins", category: "Cold Prep", shelfLife: "2 Days" },
+      { id: 40, name: "Calamari", category: "Cold Prep", shelfLife: "2 Days" },
+      { id: 41, name: "Guacamole", category: "Cold Prep", shelfLife: "1 Days" },
+      { id: 42, name: "Honey Buns", category: "Cold Prep", shelfLife: "3 Days" },
+      { id: 43, name: "Pico De Gallo", category: "Cold Prep", shelfLife: "3 Days" },
+      { id: 44, name: "Red Velvet Cake Crumb", category: "Cold Prep", shelfLife: "5 Days" },
+      { id: 45, name: "Ribs", category: "Cold Prep", shelfLife: "7 Days" },
+      { id: 46, name: "Spinach Dip Mix", category: "Cold Prep", shelfLife: "5 Days" },
 
       // Hot Prep
-      { id: 42, name: "Broccoli Bites", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 43, name: "Blackened Tilapia", category: "Hot Prep", shelfLife: "3 Days" },
-      { id: 44, name: "Brisket", category: "Hot Prep", shelfLife: "3 Days" },
-      { id: 45, name: "Pasta & Pesto Savonier", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 46, name: "Curry", category: "Hot Prep", shelfLife: "3 Days" },
-      { id: 47, name: "Nacho Beef", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 48, name: "Nacho Chips", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 49, name: "Pepperoni Slices", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 50, name: "Queso Cheese", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 51, name: "Seasoning Blend", category: "Hot Prep", shelfLife: "5 Days" },
-      { id: 52, name: "Sliced Beef", category: "Hot Prep", shelfLife: "3 Days" },
+      { id: 47, name: "Bacon Bits", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 48, name: "Blanched Rigatoni", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 49, name: "Brisket", category: "Hot Prep", shelfLife: "3 Days" },
+      { id: 50, name: "fried Tortilla Straws", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 51, name: "Gravy", category: "Hot Prep", shelfLife: "2 Days" },
+      { id: 52, name: "Julienne Chicken", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 53, name: "Nacho Beef", category: "Hot Prep", shelfLife: "2 Days" },
+      { id: 54, name: "Nacho Chips", category: "Hot Prep", shelfLife: "2 Days" },
+      { id: 55, name: "Peppercorn Sauce", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 56, name: "Queso Cheese", category: "Hot Prep", shelfLife: "7 Days" },
+      { id: 57, name: "Quinoa", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 58, name: "Rice", category: "Hot Prep", shelfLife: "4 Days" },
+      { id: 59, name: "Searing Steak", category: "Hot Prep", shelfLife: "2 Days" },
+      { id: 60, name: "Spinach Dip Chips", category: "Hot Prep", shelfLife: "4 Days" },
+
+
 
       // Portioning
-      { id: 53, name: "Battered Chicken Cutlet", category: "Portioning", shelfLife: "Frozen" },
-      { id: 54, name: "Battered Pickle Cutlet", category: "Portioning", shelfLife: "Frozen" },
-      { id: 55, name: "Beef Patties", category: "Portioning", shelfLife: "2 Days" },
-      { id: 56, name: "Blanched Vegetable", category: "Portioning", shelfLife: "3 Days" },
-      { id: 57, name: "Boneless Wings", category: "Portioning", shelfLife: "Frozen" },
-      { id: 58, name: "Calamari/Veggies", category: "Portioning", shelfLife: "2 Days" },
-      { id: 59, name: "Cheese Curds", category: "Portioning", shelfLife: "6 Days" },
-      { id: 60, name: "Cubic Cheese", category: "Portioning", shelfLife: "3 Days" },
-      { id: 61, name: "Lattice Cut Veggies", category: "Portioning", shelfLife: "2 Days" },
-      { id: 62, name: "Sliced Cheese", category: "Portioning", shelfLife: "6 Days" },
-      { id: 63, name: "Pulled Beef/Veggie", category: "Portioning", shelfLife: "3 Days" },
-      { id: 64, name: "Quinoa", category: "Portioning", shelfLife: "4 Days" },
-      { id: 65, name: "Rico", category: "Portioning", shelfLife: "3 Days" },
-      { id: 66, name: "Shredded Mozzarella", category: "Portioning", shelfLife: "3 Days" },
-      { id: 67, name: "Sweet Potato Fries", category: "Portioning", shelfLife: "Frozen" },
-      { id: 68, name: "Fajita Island Wraps", category: "Portioning", shelfLife: "Frozen" }
+      { id: 61, name: "Battered Cheese Curds", category: "Portioning", shelfLife: "Frozen" },
+      { id: 62, name: "Buttermilk Pickle Coins", category: "Portioning", shelfLife: "7" },
+      { id: 63, name: "Beef Brisket", category: "Portioning", shelfLife: "4 Days" },
+      { id: 64, name: "Boneless Wings", category: "Portioning", shelfLife: "Frozen" },
+      { id: 65, name: "Calamari/Veggies", category: "Portioning", shelfLife: "2 Days" },
+      { id: 66, name: "Cheese Curds", category: "Portioning", shelfLife: "6 Days" },
+      { id: 67, name: "Goat Cheese", category: "Portioning", shelfLife: "3 Days" },
+      { id: 68, name: "Lattice Cut Veggies", category: "Portioning", shelfLife: "3 Days" },
+      { id: 69, name: "Mixed Cheese", category: "Portioning", shelfLife: "5 Days" },
+      { id: 70, name: "Pasta/Bowl Veggies", category: "Portioning", shelfLife: "3 Days" },
+      { id: 71, name: "Quinoa", category: "Portioning", shelfLife: "4 Days" },
+      { id: 72, name: "Rice", category: "Portioning", shelfLife: "3 Days" },
+      { id: 73, name: "Shredded Mozzarella", category: "Portioning", shelfLife: "3 Days" },
+      { id: 74, name: "Sweet Potato Fries", category: "Portioning", shelfLife: "Frozen" },
+      { id: 75, name: "Plant-Based Wings", category: "Portioning", shelfLife: "Frozen" }
     ];
     
     
@@ -840,22 +860,24 @@
           cardContent.className = 'card-content';
           
           cardContent.innerHTML = `
-            <div class="item-name">${item.name}</div>
-            <div class="item-info">
-              <div class="info-row">
-                <span>Shelf Life:</span>
-                <span class="shelf-life">${item.shelfLife}</span>
-              </div>
-              <div class="info-row">
+          <div class="item-name">${item.name}</div>
+          <div class="item-info">
+            <div class="info-row">
+              <span>Shelf Life:</span>
+              <span class="shelf-life">${item.shelfLife}</span>
+            </div>
+            <div class="info-row">
                 <span>Today:</span>
                 <span class="today-date">${todayShort}</span>
               </div>
-              <div class="info-row">
-                <span>Due Date:</span>
+            <div class="info-row today-due-row">
+              <div class="today-due-group">
+                <span>Due:</span>
                 <span class="due-date ${dateStatus}">${dueDate}</span>
               </div>
             </div>
-          `;
+          </div>
+        `;
           
           // CRUD buttons
           const crudButtons = document.createElement('div');
@@ -868,7 +890,7 @@
           // Add swipe functionality
           let startX;
           let currentX;
-          
+
           itemCard.addEventListener('touchstart', e => {
             startX = e.touches[0].clientX;
           });
