@@ -474,6 +474,16 @@
       border-radius: 15px 15px 0 0;
     }
     
+    /* For swipe actions - make sure card content takes full width */
+    .card-content {
+      width: 100%;
+    }
+    
+    /* Show CRUD buttons when swiped */
+    .item-card.swiped .crud-buttons {
+      right: 0;
+    }
+    
     /* Responsive adjustments */
     @media (max-width: 640px) {
       .container {
@@ -655,6 +665,7 @@
       { id: 67, name: "Sweet Potato Fries", category: "Portioning", shelfLife: "Frozen" },
       { id: 68, name: "Fajita Island Wraps", category: "Portioning", shelfLife: "Frozen" }
     ];
+    
     
     // Save data to localStorage
     function saveData() {
@@ -861,56 +872,56 @@
           itemCard.addEventListener('touchstart', e => {
             startX = e.touches[0].clientX;
           });
-          
+
           itemCard.addEventListener('touchmove', e => {
             currentX = e.touches[0].clientX;
-            const diffX = currentX - startX;
-            
-            if (diffX > 0) {  // Only allow right swipe
-              cardContent.style.transform = `translateX(${Math.min(diffX, 100)}px)`;
+            const diffX = startX - currentX; // Change: Swipe from right to left
+
+            if (diffX > 0) {  // Only allow left swipe
+              cardContent.style.transform = `translateX(${Math.min(-diffX, 100)}px)`; // Change: Negative translation
             }
           });
-          
+
           itemCard.addEventListener('touchend', e => {
-            const diffX = currentX - startX;
-            
+            const diffX = startX - currentX; // Change: Swipe from right to left
+
             if (diffX > 50) {  // Threshold to show buttons
-              cardContent.style.transform = 'translateX(100px)';
+              cardContent.style.transform = 'translateX(-100px)'; // Change: Negative translation
               itemCard.classList.add('swiped');
             } else {
               cardContent.style.transform = 'translateX(0)';
               itemCard.classList.remove('swiped');
             }
           });
-          
+
           // For desktop/mouse users
           itemCard.addEventListener('mousedown', e => {
             startX = e.clientX;
-            
+
             const onMouseMove = e => {
               currentX = e.clientX;
-              const diffX = currentX - startX;
-              
-              if (diffX > 0) {  // Only allow right swipe
-                cardContent.style.transform = `translateX(${Math.min(diffX, 100)}px)`;
+              const diffX = startX - currentX; // Change: Swipe from right to left
+
+              if (diffX > 0) {  // Only allow left swipe
+                cardContent.style.transform = `translateX(${Math.min(-diffX, 100)}px)`; // Change: Negative translation
               }
             };
-            
+
             const onMouseUp = e => {
-              const diffX = currentX - startX;
-              
+              const diffX = startX - currentX; // Change: Swipe from right to left
+
               if (diffX > 50) {  // Threshold to show buttons
-                cardContent.style.transform = 'translateX(100px)';
+                cardContent.style.transform = 'translateX(-100px)'; // Change: Negative translation
                 itemCard.classList.add('swiped');
               } else {
                 cardContent.style.transform = 'translateX(0)';
                 itemCard.classList.remove('swiped');
               }
-              
+
               document.removeEventListener('mousemove', onMouseMove);
               document.removeEventListener('mouseup', onMouseUp);
             };
-            
+
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
           });
@@ -978,6 +989,8 @@
           openEditModal(itemId);
         } else if (action === 'delete') {
           deleteItem(itemId);
+        } else if (action === 'add') {
+          openEditModal();
         }
         
         hidePasswordOverlay();
@@ -1099,7 +1112,7 @@
       
       // Add Item button
       document.getElementById('addItemBtn').addEventListener('click', () => {
-        openEditModal();
+        showPasswordOverlay('add');
       });
       
       // Modal events
