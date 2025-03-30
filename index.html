@@ -1,908 +1,2185 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>St. Louis Bar & Grill</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #4b6cb7, #182848);
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding: 20px;
-    }
-    
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      animation: fadeIn 0.8s forwards;
-      margin: 0 auto;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>St. Louis Bar & Grill</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      background: linear-gradient(90deg, #4b6cb7, #182848);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: colorShift 8s infinite alternate;
-    }
-    
-    @keyframes colorShift {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-    
-    .search-container {
-      position: relative;
-      margin-bottom: 20px;
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #4b6cb7;
-    }
-    
-    #searchInput {
-      width: 100%;
-      padding: 12px 15px 12px 40px;
-      font-size: 16px;
-      border: none;
-      border-radius: 30px;
-      background-color: #f3f4f6;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
-    
-    #searchInput:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.3);
-    }
-    
-    .filter-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .filter-btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 20px;
-      background-color: #e5e7eb;
-      color: #4b5563;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
-    
-    .filter-btn.active {
-      background-color: #4b6cb7;
-      color: white;
-    }
-    
-    .filter-btn:hover:not(.active) {
-      background-color: #d1d5db;
-    }
-    
-    .items-container {
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 10px;
-    }
-    
-    .category {
-      margin-bottom: 20px;
-    }
-    
-    .category-header {
-      background: linear-gradient(90deg, #4b6cb7, #182848);
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      font-weight: 600;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .item-count {
-      background-color: rgba(255, 255, 255, 0.3);
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 14px;
-    }
-    
-    .item-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 10px;
-    }
-    
-    .items-container {
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 10px;
-      touch-action: pan-y; /* Allow vertical scrolling */
-    }
 
-    .item-card {
-      background-color: white;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      border-left: 5px solid #4b6cb7;
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: slideIn 0.5s forwards;
-      position: relative;
-      overflow: hidden;
-      touch-action: pan-y; /* Allow vertical scrolling */
-    }
-    
-    @keyframes slideIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #4b6cb7, #182848);
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 20px;
       }
-    }
-    
-    .item-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .item-name {
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #1f2937;
-    }
-    
-    .item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      font-size: 14px;
-      color: #4b5563;
-    }
-    
-    .info-row {
-      display: flex;
-      align-items: center; /* Align items vertically */
-      gap: 5px; /* Add a small gap between the label and value */
-    }
-    
-    .today-date {
-      color: #4b5563;
-      font-weight: 500;
-    }
-    
-    .shelf-life {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      background-color: #e5e7eb;
-      font-weight: 500;
-    }
-    
-    .due-date {
-      font-weight: 600;
-    }
-    
-    .date-warning {
-      color: #b91c1c;
-    }
-    
-    .date-approaching {
-      color: #d97706;
-    }
-    
-    .date-good {
-      color: #047857;
-    }
-    
-    .no-results {
-      text-align: center;
-      color: #6b7280;
-      padding: 30px;
-      font-style: italic;
-      animation: fadeIn 0.5s forwards;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .current-date {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #4b5563;
-      font-weight: 500;
-    }
-    .info-row.today-due-row {
-      display: flex;
-      justify-content: flex-end; /* Align to the right */
-      gap: 20px; /* Add spacing between "Today" and "Due" */
-    }
 
-    .today-due-group {
-      display: flex;
-      align-items: center; /* Align label and value vertically */
-      gap: 5px; /* Add spacing between label and value */
-    }
-    /* Custom scrollbar */
-    .items-container::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    .items-container::-webkit-scrollbar-track {
-      background: #f3f4f6;
-      border-radius: 10px;
-    }
-    
-    .items-container::-webkit-scrollbar-thumb {
-      background: linear-gradient(to bottom, #4b6cb7, #182848);
-      border-radius: 10px;
-    }
-    
-    /* Animation delay for cards */
-    .item-card {
-      animation-delay: calc(0.05s * var(--i));
-    }
-    
-    /* CRUD operation buttons */
-    .crud-buttons {
-      position: absolute;
-      top: 0;
-      right: -100px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-    
-    .edit-btn, .delete-btn {
-      padding: 5px 10px;
-      border: none;
-      cursor: pointer;
-      height: 100%;
-      color: white;
-      transition: all 0.2s ease;
-    }
-    
-    .edit-btn {
-      background-color: #3b82f6;
-    }
-    
-    .delete-btn {
-      background-color: #ef4444;
-    }
-    
-    .edit-btn:hover, .delete-btn:hover {
-      filter: brightness(1.1);
-    }
-    
-    .card-content {
-      transition: transform 0.3s ease;
-    }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .modal-content {
-      background-color: white;
-      padding: 25px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-      animation: modalFadeIn 0.3s forwards;
-    }
-    
-    @keyframes modalFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .modal-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1f2937;
-    }
-    
-    .close-modal {
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #4b5563;
-    }
-    
-    .form-group {
-      margin-bottom: 15px;
-    }
-    
-    .form-label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-      color: #4b5563;
-    }
-    
-    .form-input, .form-select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    
-    .form-input:focus, .form-select:focus {
-      outline: none;
-      border-color: #4b6cb7;
-      box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
-    }
-    
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .cancel-btn, .save-btn, .add-item-btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-    
-    .cancel-btn {
-      background-color: #e5e7eb;
-      color: #4b5563;
-    }
-    
-    .save-btn {
-      background-color: #4b6cb7;
-      color: white;
-    }
-    
-    .add-item-btn {
-      background-color: #10b981;
-      color: white;
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 20px;
-    }
-    
-    .cancel-btn:hover, .save-btn:hover, .add-item-btn:hover {
-      filter: brightness(1.1);
-    }
-    
-    .password-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1001;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .password-container {
-      background-color: white;
-      padding: 25px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .password-title {
-      margin-bottom: 15px;
-      font-weight: 600;
-      color: #1f2937;
-    }
-    
-    .password-input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-    
-    .password-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    
-    /* Add the top controls wrapper */
-    .top-controls-wrapper {
-      position: sticky;
-      top: 0;
-      background-color: rgba(255, 255, 255, 0.95);
-      z-index: 10;
-      padding-bottom: 10px;
-      border-radius: 15px 15px 0 0;
-    }
-    
-    /* For swipe actions - make sure card content takes full width */
-    .card-content {
-      width: 100%;
-    }
-    
-    /* Show CRUD buttons when swiped */
-    .item-card.swiped .crud-buttons {
-      right: 0;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 640px) {
       .container {
-        padding: 15px;
+        width: 100%;
+        max-width: 900px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        animation: fadeIn 0.8s forwards;
+        margin: 0 auto;
       }
-      
-      .item-list {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="top-controls-wrapper">
-      <h1>St. Louis Bar & Grill</h1>
-      
-      <div class="current-date" id="currentDate"></div>
-      
-      <div class="search-container">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search for items...">
-      </div>
-      
-      <div class="filter-container" id="filterContainer">
-        <button class="filter-btn active" data-category="all">All Items</button>
-        <!-- Filters will be added dynamically -->
-      </div>
-      
-      <button class="add-item-btn" id="addItemBtn">
-        <span>+</span> Add New Item
-      </button>
-    </div>
-    
-    <div class="items-container" id="itemsContainer">
-      <!-- Category sections will be added dynamically -->
-    </div>
-  </div>
-  
-  <!-- Edit/Add Modal -->
-  <div class="modal" id="itemModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="modalTitle">Edit Item</h3>
-        <button class="close-modal" id="closeModal">&times;</button>
-      </div>
-      <form id="itemForm">
-        <input type="hidden" id="itemId">
-        <div class="form-group">
-          <label for="itemName" class="form-label">Item Name</label>
-          <input type="text" id="itemName" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label for="itemCategory" class="form-label">Category</label>
-          <select id="itemCategory" class="form-select" required>
-            <option value="">Select a category</option>
-            <!-- Categories will be added dynamically -->
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="itemShelfLife" class="form-label">Shelf Life</label>
-          <input type="text" id="itemShelfLife" class="form-input" placeholder="e.g. 3 Days, Frozen" required>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="cancel-btn" id="cancelForm">Cancel</button>
-          <button type="submit" class="save-btn">Save Item</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  
-  <!-- Password Overlay -->
-  <div class="password-overlay" id="passwordOverlay">
-    <div class="password-container">
-      <h3 class="password-title">Enter Password</h3>
-      <input type="password" id="passwordInput" class="password-input" placeholder="Enter password">
-      <div class="password-actions">
-        <button type="button" class="cancel-btn" id="cancelPassword">Cancel</button>
-        <button type="button" class="save-btn" id="submitPassword">Submit</button>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    // Current date for calculations
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-    
-    // Today's short date for display in cards
-    const todayShort = today.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
-    
-    document.getElementById('currentDate').textContent = `Today: ${formattedDate}`;
-    
-    // Food items data with categories and shelf life - now with unique IDs
-    let foodItems = [
-      // Sauce Prep
-      { id: 1, name: "Alfredo Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 2, name: "BBQ Mayo", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 3, name: "Buffalo Ranch", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 4, name: "Chipotle Garlic dill", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 5, name: "Chocolate Sauce", category: "Sauce Prep", shelfLife: "15 Days" },
-      { id: 6, name: "Creame Cheese Icing", category: "Sauce Prep", shelfLife: "7 Days" },
-      { id: 7, name: "Honey Cajun", category: "Sauce Prep", shelfLife: "8 Days" },
-      { id: 8, name: "Horseradish Aioli", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 9, name: "Hot and honey", category: "Sauce Prep", shelfLife: "10 Days" },
-      { id: 10, name: "Pizza Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
-      { id: 11, name: "Raspberry Sauce", category: "Sauce Prep", shelfLife: "10 Days" },
-      { id: 12, name: "Red Thai Curry Sauce", category: "Sauce Prep", shelfLife: "7 Days" },
-      { id: 13, name: "Rose Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 14, name: "Slider Sauce", category: "Sauce Prep", shelfLife: "5 Days" },
-      { id: 15, name: "Spicy Garlic Parm", category: "Sauce Prep", shelfLife: "4 Days" },
-      { id: 16, name: "Sweet Chili Poppyseed", category: "Sauce Prep", shelfLife: "5 Days" },
-
-      // Veggie Prep
-      { id: 17, name: "Carrot Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 18, name: "Celery Sticks", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 19, name: "Chopped Romaine", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 20, name: "Diced Green Onions", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 21, name: "Diced Red Peppers", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 22, name: "Diced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 23, name: "Diced Cucumbers", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 24, name: "Julienne Mashrooms", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 25, name: "Julienne Red Onions", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 26, name: "Lemon Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 27, name: "Lettuce Blend", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 28, name: "Lettuce Cups", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 29, name: "Lime Wedges", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 30, name: "Shredded Carrots", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 31, name: "Shredded Iceberg", category: "Veggie Prep", shelfLife: "2 Days" },
-      { id: 32, name: "Sliced Cucumbers", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 33, name: "Sliced Jalapenos", category: "Veggie Prep", shelfLife: "3 Days" },
-      { id: 34, name: "Sliced Tomatoes", category: "Veggie Prep", shelfLife: "2 Days" },
-
-      // Cold Prep
-      { id: 35, name: "Birthday Cake Crumb", category: "Cold Prep", shelfLife: "5 Days" },
-      { id: 36, name: "Brownie Push-In", category: "Cold Prep", shelfLife: "7 Days" },
-      { id: 37, name: "Buttermilk Chicken Breast", category: "Cold Prep", shelfLife: "2 Days" },
-      { id: 38, name: "Buttermilk Chicken Tender", category: "Cold Prep", shelfLife: "2 Days" },
-      { id: 39, name: "Pickle Coins", category: "Cold Prep", shelfLife: "2 Days" },
-      { id: 40, name: "Calamari", category: "Cold Prep", shelfLife: "2 Days" },
-      { id: 41, name: "Guacamole", category: "Cold Prep", shelfLife: "1 Days" },
-      { id: 42, name: "Honey Buns", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 43, name: "Pico De Gallo", category: "Cold Prep", shelfLife: "3 Days" },
-      { id: 44, name: "Red Velvet Cake Crumb", category: "Cold Prep", shelfLife: "5 Days" },
-      { id: 45, name: "Ribs", category: "Cold Prep", shelfLife: "7 Days" },
-      { id: 46, name: "Spinach Dip Mix", category: "Cold Prep", shelfLife: "5 Days" },
-
-      // Hot Prep
-      { id: 47, name: "Bacon Bits", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 48, name: "Blanched Rigatoni", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 49, name: "Brisket", category: "Hot Prep", shelfLife: "3 Days" },
-      { id: 50, name: "fried Tortilla Straws", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 51, name: "Gravy", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 52, name: "Julienne Chicken", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 53, name: "Nacho Beef", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 54, name: "Nacho Chips", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 55, name: "Peppercorn Sauce", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 56, name: "Queso Cheese", category: "Hot Prep", shelfLife: "7 Days" },
-      { id: 57, name: "Quinoa", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 58, name: "Rice", category: "Hot Prep", shelfLife: "4 Days" },
-      { id: 59, name: "Searing Steak", category: "Hot Prep", shelfLife: "2 Days" },
-      { id: 60, name: "Spinach Dip Chips", category: "Hot Prep", shelfLife: "4 Days" },
-
-      // Portioning
-      { id: 61, name: "Battered Cheese Curds", category: "Portioning", shelfLife: "Frozen" },
-      { id: 62, name: "Buttermilk Pickle Coins", category: "Portioning", shelfLife: "7" },
-      { id: 63, name: "Beef Brisket", category: "Portioning", shelfLife: "4 Days" },
-      { id: 64, name: "Boneless Wings", category: "Portioning", shelfLife: "Frozen" },
-      { id: 65, name: "Calamari/Veggies", category: "Portioning", shelfLife: "2 Days" },
-      { id: 66, name: "Cheese Curds", category: "Portioning", shelfLife: "6 Days" },
-      { id: 67, name: "Goat Cheese", category: "Portioning", shelfLife: "3 Days" },
-      { id: 68, name: "Lettuce cup Veggies", category: "Portioning", shelfLife: "3 Days" },
-      { id: 69, name: "Mixed Cheese", category: "Portioning", shelfLife: "5 Days" },
-      { id: 70, name: "Pasta/Bowl Veggies", category: "Portioning", shelfLife: "3 Days" },
-      { id: 71, name: "Quinoa", category: "Portioning", shelfLife: "4 Days" },
-      { id: 72, name: "Rice", category: "Portioning", shelfLife: "3 Days" },
-      { id: 73, name: "Shredded Mozzarella", category: "Portioning", shelfLife: "3 Days" },
-      { id: 74, name: "Sweet Potato Fries", category: "Portioning", shelfLife: "Frozen" },
-      { id: 75, name: "Plant-Based Wings", category: "Portioning", shelfLife: "Frozen" },
-
-      //Raw Product
-      { id: 76, name: "Burgers", category: "Raw Product", shelfLife: "5" },
-      { id: 77, name: "Chicken Breast", category: "Raw Product", shelfLife: "5" },
-      { id: 78, name: "Chicken Tenders", category: "Raw Product", shelfLife: "3" },
-      { id: 79, name: "Shrimp", category: "Raw Product", shelfLife: "3" },
-      { id: 80, name: "Slider Patties", category: "Raw Product", shelfLife: "3" },
-      { id: 81, name: "Steak", category: "Raw Product", shelfLife: "5" },
-      { id: 82, name: "Squid", category: "Raw Product", shelfLife: "2" },
-      { id: 83, name: "Wings", category: "Raw Product", shelfLife: "5" },
-
-      //Cooked Product
-      { id: 84, name: "Back Ribs", category: "Cooked Product", shelfLife: "7" },
-      { id: 85, name: "Bacon", category: "Cooked Product", shelfLife: "7" },
-      { id: 86, name: "Brisket", category: "Cooked Product", shelfLife: "4" },
-      { id: 87, name: "Pepperoni", category: "Cooked Product", shelfLife: "7" },
-
-      //Other
-      { id: 88, name: "Alfredo", category: "Other", shelfLife: "4" },
-      { id: 89, name: "Cheeese Curds", category: "Other", shelfLife: "3" },
-      { id: 90, name: "Cream Cheese", category: "Other", shelfLife: "14" },
-      { id: 91, name: "Guacamole", category: "Other", shelfLife: "2" },
-      { id: 92, name: "Margarita Mix", category: "Other", shelfLife: "3" },
-      { id: 93, name: "Nacho Chips", category: "Other", shelfLife: "30" },
-      { id: 94, name: "Pesto", category: "Other", shelfLife: "2" },
-      { id: 95, name: "Spinach", category: "Other", shelfLife: "2" },
-
-      //Bakery
-      { id: 96, name: '12" Tortilla', category: "Bakery", shelfLife: "30" },
-      { id: 97, name: "Brioche Buns", category: "Bakery", shelfLife: "3" },
-      { id: 98, name: "Brownie Psh-In", category: "Bakery", shelfLife: "7" },
-      { id: 99, name: "Cheesecake", category: "Bakery", shelfLife: "5" },
-      { id: 100, name: "Panini Rolls", category: "Bakery", shelfLife: "3" },
-      { id: 101, name: "Pizza Crust", category: "Bakery", shelfLife: "3" },
-      { id: 102, name: "Potato Buns", category: "Bakery", shelfLife: "3" },
-      { id: 103, name: "Red Velvet Cake", category: "Bakery", shelfLife: "7" },
-      { id: 104, name: "Slider Buns", category: "Bakery", shelfLife: "5" },
-      { id: 105, name: "Vanilla Cake", category: "Bakery", shelfLife: "7" },
-    ];
-    
-    
-    // Save data to localStorage
-    function saveData() {
-      localStorage.setItem('foodItems', JSON.stringify(foodItems));
-    }
-    
-    // Load data from localStorage if exists
-    function loadData() {
-      const storedData = localStorage.getItem('foodItems');
-      if (storedData) {
-        foodItems = JSON.parse(storedData);
-      } else {
-        // First time, save the initial data
-        saveData();
-      }
-    }
-    
-    // Load the data
-    loadData();
-    
-    // Function to calculate due date based on shelf life
-    function calculateDueDate(shelfLife) {
-      if (shelfLife.toLowerCase().includes('frozen') || isNaN(parseInt(shelfLife))) {
-        return shelfLife; // Return as is if it's "Frozen" or not a number
-      }
-      
-      const days = parseInt(shelfLife);
-      const dueDate = new Date(today);
-      dueDate.setDate(dueDate.getDate() + days);
-      
-      return dueDate.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric'
-      });
-    }
-    
-    // Function to determine date status for styling
-    function getDateStatus(shelfLife) {
-      if (shelfLife.toLowerCase().includes('frozen') || isNaN(parseInt(shelfLife))) {
-        return 'date-good';
-      }
-      
-      const days = parseInt(shelfLife);
-      if (days <= 2) {
-        return 'date-warning';
-      } else if (days <= 4) {
-        return 'date-approaching';
-      } else {
-        return 'date-good';
-      }
-    }
-    
-    // Get unique categories
-    function getCategories() {
-      return [...new Set(foodItems.map(item => item.category))].sort();
-    }
-    
-    // Add filter buttons
-    function setupFilterButtons() {
-      const filterContainer = document.getElementById('filterContainer');
-      // Clear existing filters (except All Items)
-      const allItemsBtn = filterContainer.querySelector('[data-category="all"]');
-      filterContainer.innerHTML = '';
-      filterContainer.appendChild(allItemsBtn);
-      
-      // Add category filters
-      getCategories().forEach(category => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-btn';
-        btn.textContent = category;
-        btn.dataset.category = category;
-        filterContainer.appendChild(btn);
-      });
-      
-      // Add event listeners for filtering
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          
-          const category = btn.dataset.category;
-          const searchTerm = document.getElementById('searchInput').value;
-          renderItems(category, searchTerm);
-        });
-      });
-    }
-    
-    // Populate category dropdown in the form
-    function populateCategoryDropdown() {
-      const categorySelect = document.getElementById('itemCategory');
-      // Clear existing options except the first placeholder
-      categorySelect.innerHTML = '<option value="">Select a category</option>';
-      
-      // Add options for each category
-      getCategories().forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-      });
-    }
-    
-    // Function to render items based on category and search
-    function renderItems(category = 'all', searchTerm = '') {
-      const itemsContainer = document.getElementById('itemsContainer');
-      itemsContainer.innerHTML = '';
-      
-      // Filter items based on category and search
-      let filteredItems = foodItems;
-      
-      if (category !== 'all') {
-        filteredItems = filteredItems.filter(item => item.category === category);
-      }
-      
-      if (searchTerm) {
-        const term = searchTerm.toLowerCase();
-        filteredItems = filteredItems.filter(item => 
-          item.name.toLowerCase().includes(term) || 
-          item.category.toLowerCase().includes(term) ||
-          item.shelfLife.toLowerCase().includes(term)
-        );
-      }
-      
-      // Group by category
-      const itemsByCategory = {};
-      filteredItems.forEach(item => {
-        if (!itemsByCategory[item.category]) {
-          itemsByCategory[item.category] = [];
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
-        itemsByCategory[item.category].push(item);
-      });
-      
-      // Check if no results
-      if (Object.keys(itemsByCategory).length === 0) {
-        const noResults = document.createElement('div');
-        noResults.className = 'no-results';
-        noResults.textContent = 'No items found. Try a different search or filter.';
-        itemsContainer.appendChild(noResults);
-        return;
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      
-      // Sort categories
-      const sortedCategories = Object.keys(itemsByCategory).sort();
-      
-      // Create category sections
-      sortedCategories.forEach((category, categoryIndex) => {
-        const items = itemsByCategory[category];
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #4b6cb7, #182848);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: colorShift 8s infinite alternate;
+      }
+
+      @keyframes colorShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .search-container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #4b6cb7;
+      }
+
+      #searchInput {
+        width: 100%;
+        padding: 12px 15px 12px 40px;
+        font-size: 16px;
+        border: none;
+        border-radius: 30px;
+        background-color: #f3f4f6;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      #searchInput:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.3);
+      }
+
+      .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 20px;
+        background-color: #e5e7eb;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .filter-btn.active {
+        background-color: #4b6cb7;
+        color: white;
+      }
+
+      .filter-btn:hover:not(.active) {
+        background-color: #d1d5db;
+      }
+
+      .items-container {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px;
+      }
+
+      .category {
+        margin-bottom: 20px;
+      }
+
+      .category-header {
+        background: linear-gradient(90deg, #4b6cb7, #182848);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .item-count {
+        background-color: rgba(255, 255, 255, 0.3);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+
+      .item-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 10px;
+      }
+
+      .items-container {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px;
+        touch-action: pan-y; /* Allow vertical scrolling */
+      }
+
+      .item-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 5px solid #4b6cb7;
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: slideIn 0.5s forwards;
+        position: relative;
+        overflow: hidden;
+        touch-action: pan-y; /* Allow vertical scrolling */
+      }
+
+      @keyframes slideIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .item-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .item-name {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #1f2937;
+      }
+
+      .item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        font-size: 14px;
+        color: #4b5563;
+      }
+
+      .info-row {
+        display: flex;
+        align-items: center; /* Align items vertically */
+        gap: 5px; /* Add a small gap between the label and value */
+      }
+
+      .today-date {
+        color: #4b5563;
+        font-weight: 500;
+      }
+
+      .shelf-life {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background-color: #e5e7eb;
+        font-weight: 500;
+      }
+
+      .due-date {
+        font-weight: 600;
+      }
+
+      .date-warning {
+        color: #b91c1c;
+      }
+
+      .date-approaching {
+        color: #d97706;
+      }
+
+      .date-good {
+        color: #047857;
+      }
+
+      .no-results {
+        text-align: center;
+        color: #6b7280;
+        padding: 30px;
+        font-style: italic;
+        animation: fadeIn 0.5s forwards;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .current-date {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #4b5563;
+        font-weight: 500;
+      }
+      .info-row.today-due-row {
+        display: flex;
+        justify-content: flex-end; /* Align to the right */
+        gap: 20px; /* Add spacing between "Today" and "Due" */
+      }
+
+      .today-due-group {
+        display: flex;
+        align-items: center; /* Align label and value vertically */
+        gap: 5px; /* Add spacing between label and value */
+      }
+      /* Custom scrollbar */
+      .items-container::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .items-container::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 10px;
+      }
+
+      .items-container::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #4b6cb7, #182848);
+        border-radius: 10px;
+      }
+
+      /* Animation delay for cards */
+      .item-card {
+        animation-delay: calc(0.05s * var(--i));
+      }
+
+      /* CRUD operation buttons */
+      .crud-buttons {
+        position: absolute;
+        top: 0;
+        right: -100px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .edit-btn,
+      .delete-btn {
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+        height: 100%;
+        color: white;
+        transition: all 0.2s ease;
+      }
+
+      .edit-btn {
+        background-color: #3b82f6;
+      }
+
+      .delete-btn {
+        background-color: #ef4444;
+      }
+
+      .edit-btn:hover,
+      .delete-btn:hover {
+        filter: brightness(1.1);
+      }
+
+      .card-content {
+        transition: transform 0.3s ease;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s forwards;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #4b5563;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #4b5563;
+      }
+
+      .form-input,
+      .form-select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-input:focus,
+      .form-select:focus {
+        outline: none;
+        border-color: #4b6cb7;
+        box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .cancel-btn,
+      .save-btn,
+      .add-item-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .cancel-btn {
+        background-color: #e5e7eb;
+        color: #4b5563;
+      }
+
+      .save-btn {
+        background-color: #4b6cb7;
+        color: white;
+      }
+
+      .add-item-btn {
+        background-color: #10b981;
+        color: white;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 20px;
+      }
+
+      .cancel-btn:hover,
+      .save-btn:hover,
+      .add-item-btn:hover {
+        filter: brightness(1.1);
+      }
+
+      .password-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .password-container {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .password-title {
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .password-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
+      .password-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      /* Add the top controls wrapper */
+      .top-controls-wrapper {
+        position: sticky;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        z-index: 10;
+        padding-bottom: 10px;
+        border-radius: 15px 15px 0 0;
+      }
+
+      /* For swipe actions - make sure card content takes full width */
+      .card-content {
+        width: 100%;
+      }
+
+      /* Show CRUD buttons when swiped */
+      .item-card.swiped .crud-buttons {
+        right: 0;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 640px) {
+        .container {
+          padding: 15px;
+        }
+
+        .item-list {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* Recipe Detail Modal */
+      .recipe-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .recipe-modal-content {
+        background-color: white;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 25px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        animation: modalFadeIn 0.3s forwards;
+      }
+
+      .recipe-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .recipe-modal-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
+      }
+
+      .recipe-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #4b5563;
+      }
+
+      .recipe-section {
+        margin-bottom: 20px;
+      }
+
+      .recipe-section-title {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .recipe-ingredients-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+      }
+
+      .recipe-ingredients-table th,
+      .recipe-ingredients-table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .recipe-ingredients-table th {
+        background-color: #4b6cb7;
+        color: white;
+        text-align: left;
+        padding: 10px;
+      }
+
+      .recipeModalContent table {
+        margin-bottom: 20px;
+        width: 100%;
+        text-indent: initial;
+        border-spacing: 2px;
+      }
+
+      .recipeModalContent table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        display: table-cell;
+        vertical-align: inherit;
+        unicode-bidi: isolate;
+      }
+      .recipeModalContent table tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .recipeModalContent table th {
+        background-color: #4b6cb7;
+        color: white;
+        text-align: left;
+        padding: 10px;
+      }
+
+      .recipeModalContent h3 {
+        margin: 15px 0 10px;
+        color: #4b6cb7;
+      }
+
+      ol > li::marker {
+        font-weight: bold;
+      }
+      .recipe-procedure {
+        list-style-position: inside;
+        padding-left: 5px;
+      }
+
+      .recipe-procedure li {
+        margin-bottom: 8px;
+      }
+      .shelf-life-indicator {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f3f4f6;
+      }
+      .shelf-life-icon {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-controls-wrapper">
+        <h1>St. Louis Bar & Grill</h1>
+
+        <div class="current-date" id="currentDate"></div>
+
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for items..."
+          />
+        </div>
+
+        <div class="filter-container" id="filterContainer">
+          <button class="filter-btn active" data-category="all">
+            All Items
+          </button>
+          <!-- Filters will be added dynamically -->
+        </div>
+
+        <button class="add-item-btn" id="addItemBtn">
+          <span>+</span> Add New Item
+        </button>
+      </div>
+
+      <div class="items-container" id="itemsContainer">
+        <!-- Category sections will be added dynamically -->
+      </div>
+    </div>
+
+    <!-- Edit/Add Modal -->
+    <div class="modal" id="itemModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modalTitle">Edit Item</h3>
+          <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <form id="itemForm">
+          <input type="hidden" id="itemId" />
+          <div class="form-group">
+            <label for="itemName" class="form-label">Item Name</label>
+            <input type="text" id="itemName" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="itemCategory" class="form-label">Category</label>
+            <select id="itemCategory" class="form-select" required>
+              <option value="">Select a category</option>
+              <!-- Categories will be added dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="itemShelfLife" class="form-label">Shelf Life</label>
+            <input
+              type="text"
+              id="itemShelfLife"
+              class="form-input"
+              placeholder="e.g. 3 Days, Frozen"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="cancel-btn" id="cancelForm">
+              Cancel
+            </button>
+            <button type="submit" class="save-btn">Save Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Overlay -->
+    <div class="password-overlay" id="passwordOverlay">
+      <div class="password-container">
+        <h3 class="password-title">Enter Password</h3>
+        <input
+          type="password"
+          id="passwordInput"
+          class="password-input"
+          placeholder="Enter password"
+        />
+        <div class="password-actions">
+          <button type="button" class="cancel-btn" id="cancelPassword">
+            Cancel
+          </button>
+          <button type="button" class="save-btn" id="submitPassword">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Recipe Detail Modal -->
+    <div class="recipe-modal" id="recipeModal">
+      <div class="recipe-modal-content">
+        <div class="recipe-modal-header">
+          <h3 class="recipe-modal-title" id="recipeModalTitle"></h3>
+          <div class="shelf-life">
+            <h5 class="recipe-modal-subtitle" id="recipeModalSubTitle"></h5>
+          </div>
+          <button class="recipe-close-btn" id="closeRecipeModal">
+            &times;
+          </button>
+        </div>
+        <div class="recipeModalContent" id="recipeModalContent">
+          <!-- Content will be inserted here -->
+        </div>
+      </div>
+    </div>
+    <script>
+      // Current date for calculations
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      // Today's short date for display in cards
+      const todayShort = today.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+
+      document.getElementById(
+        "currentDate"
+      ).textContent = `Today: ${formattedDate}`;
+
+      // Function to open recipe modal
+      function openRecipeModal(itemId) {
+        const item = foodItems.find((item) => item.id === itemId);
+        if (!item) return;
+
+        const modal = document.getElementById("recipeModal");
+        const modalTitle = document.getElementById("recipeModalTitle");
+        const modalSubTitle = document.getElementById("recipeModalSubTitle");
+
+        const modalContent = document.getElementById("recipeModalContent");
+
+        modalTitle.textContent = `${item.name}`;
+        modalSubTitle.textContent = `${todayShort} - ${calculateDueDate(
+          item.shelfLife
+        )}`;
+
+        let html = `
+        <table>
+        <tr>
+            <th>Yield</th>
+            <td>${item.yield}</td>
+        </tr>
+        <tr>
+            <th >Shelf Life</th>
+            <td >${item.shelfLife}</td>
+        </tr>
+        </table>
         
-        const categorySection = document.createElement('div');
-        categorySection.className = 'category';
-        
-        const categoryHeader = document.createElement('div');
-        categoryHeader.className = 'category-header';
-        categoryHeader.innerHTML = `
+    `;
+
+        if (item.ingredients && item.ingredients.length > 0) {
+          html += `
+        <div class="recipe-section">
+            
+            <table class="recipe-ingredients-table">
+            <tr>
+                <th>Ingredient</th>
+                <th>Amount</th>
+            </tr>
+            ${item.ingredients
+              .map(
+                (ing) => `
+                <tr>
+                    <td>${ing.name}</td>
+                    <td>${ing.amount}</td>
+                </tr>
+            `
+              )
+              .join("")}
+            <tr>
+                <td><strong>Yield</strong></td>
+                <td><strong>${item.yield}</strong></td>
+            </tr>
+            </table>
+        </div>
+        `;
+        }
+
+        if (item.procedure && item.procedure.length > 0) {
+          html += `
+        <div class="recipe-section">
+            <h3 class="recipe-section-title">Prep Procedure</h3>
+            <ol class="recipe-procedure">
+            ${item.procedure.map((step) => `<li>${step}</li>`).join("")}
+            </ol>
+        </div>
+        `;
+        }
+        // Add ice bath procedure if available
+        if (item.iceBathProcedure) {
+          html += `
+        <div class="recipe-section">
+            <h3 class="recipe-section-title">Ice Bath Procedure</h3>
+            <ol class="recipe-procedure">
+            ${item.iceBathProcedure.map((step) => `<li>${step}</li>`).join("")}
+            </ol>
+        </div>      
+        `;
+        }
+        // Add culinaryPrecisionPoints if available
+        if (item.culinaryPrecisionPoints) {
+          html += `
+        <div class="recipe-section">
+            <h3 class="recipe-section-title">Culinary Precision Points</h3>
+            <ol class="recipe-procedure">
+            ${item.culinaryPrecisionPoints
+              .map((step) => `<li>${step}</li>`)
+              .join("")}
+            </ol>
+        </div>      
+        `;
+        }
+        if (item.shelfLife) {
+          html += `
+            <div class="shelf-life-indicator">
+            <i class="fas fa-exclamation-circle shelf-life-icon"></i>
+            <div>
+                <strong>Remember:</strong> Always follow proper labeling procedures including name, date prepared, and expiry date.
+                <br>Shelf life for this item: <strong>${item.shelfLife}</strong>
+            </div>
+            </div>
+        `;
+        }
+
+        modalContent.innerHTML = html;
+        modal.style.display = "flex";
+      }
+
+      // Function to close recipe modal
+      function closeRecipeModal() {
+        document.getElementById("recipeModal").style.display = "none";
+      }
+      // Food items data with categories and shelf life - now with unique IDs
+      let foodItems = [
+        // Sauce Prep
+        {
+          id: 1,
+          name: "Alfredo Sauce",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Pesto", amount: "1 bag" },
+            { name: "Alfredo", amount: "3 bags" },
+            { name: "Water", amount: "750 ml" },
+          ],
+          yield: "1 Batch",
+          procedure: [
+            "Combine all ingredients and mix well.",
+            "Label and refrigerate in a covered plastic insert until use.",
+            "This can be portioned and frozen until needed.",
+          ],
+          shelfLife: "5 Days",
+        },
+        {
+          id: 2,
+          name: "BBQ Mayo",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Mississippi BBQ Sauce", amount: "250 ml" },
+            { name: "Mayonnaise", amount: "750 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 3,
+          name: "Buffalo Ranch",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Frank's Buffalo Wing Sauce", amount: "250 ml" },
+            { name: "Ranch Dressing", amount: "750 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "5 Days",
+        },
+        {
+          id: 4,
+          name: "Chipotle Garlic dill",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Ancho Chipotle Sauce", amount: "250 ml" },
+            { name: "Garlic Dill Sauce", amount: "750 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 5,
+          name: "Chocolate Sauce",
+          category: "Sauce Prep",
+          shelfLife: "15 Days",
+        },
+        {
+          id: 6,
+          name: "Creame Cheese Icing",
+          category: "Sauce Prep",
+          shelfLife: "7 Days",
+        },
+        {
+          id: 7,
+          name: "Honey Cajun",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Honey", amount: "12 fl oz" },
+            { name: "Cajun Spice", amount: "2 tbsp" },
+          ],
+          yield: "12 fl oz",
+          procedure: [
+            "Place honey in a squeeze bottle and heat in microwave for approximately 15 seconds.",
+            "Add Cajun seasoning and shake thoroughly.",
+            "Let it cool to room temperature, then label squeeze bottle. This item does not need to be refrigerated.",
+          ],
+          shelfLife: "8 Days",
+        },
+        {
+          id: 8,
+          name: "Horseradish Aioli",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Horseradish", amount: "250 ml" },
+            { name: "Mayonnaise", amount: "750 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 9,
+          name: "Hot and Honey",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "St. Louis Hot Sauce", amount: "300 ml" },
+            { name: "St. Louis Honey Garlic Sauce", amount: "700 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "10 Days",
+        },
+        {
+          id: 10,
+          name: "Pizza Sauce",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Pizza Sauce", amount: "1 Can (2.84L)" },
+            { name: "Granulated Garlic", amount: "2 tbsp" },
+            { name: "Dried Oregano", amount: "1 tbsp" },
+          ],
+          yield: "2.84 L",
+          procedure: [
+            "Combine all ingredients and mix well.",
+            "Transfer sauce into a squeeze bottle on line and store backup in a covered plastic insert.",
+            "Label and refrigerate until use.",
+          ],
+          shelfLife: "7 Days",
+        },
+        {
+          id: 11,
+          name: "Raspberry Sauce",
+          category: "Sauce Prep",
+          shelfLife: "10 Days",
+        },
+        {
+          id: 12,
+          name: "Red Thai Curry Sauce",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Red Curry Paste", amount: "9 fl oz" },
+            { name: "Coconut Milk", amount: "3 cans (400ml each)" },
+          ],
+          yield: "7 Portions",
+          procedure: [
+            "Add curry paste and coconut milk into a pot and mix well.",
+            "Place pot on stove and set it to medium heat and let simmer for 1-2 minutes.",
+            "Remove from heat and allow it to cool (following the ice bath procedure).",
+            "Once cooled, pour into a plastic insert.",
+            "Label and refrigerate until use.",
+          ],
+          iceBathProcedure: [
+            "Prepare the ice bath by filling a half-pan insert with ice and water (fill halfway).",
+            "In a separate insert (1/3 pan), carefully pour curry sauce.",
+            "Ensure the insert will fit comfortably in the ice bath.",
+            "Place the container in the ice bath, making sure the water level is high enough to surround the sides of the container but not overflow into the sauce.",
+            "Stir the sauce occasionally to help it cool evenly and more quickly.",
+            "Continue cooling until the sauce reaches room temperature or below. This process typically takes 10-15 minutes.",
+            "Transfer sauce into a plastic insert, cover, label, and refrigerate until use.",
+          ],
+          shelfLife: "7 Days",
+        },
+        {
+          id: 13,
+          name: "Rose Sauce",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Tomato Sauce", amount: "2 cans (5.68 litres)" },
+            { name: "Alfredo", amount: "1 bag" },
+            { name: "Water", amount: "33 fl oz (1 litre)" },
+            { name: "Pesto", amount: "½ bag" },
+          ],
+          yield: "34 Portions",
+          procedure: [
+            "Take frozen bag of pesto and cut in half – wrap and freeze the remainder until needed.",
+            "Combine all ingredients and mix well.",
+            "Portion out quantity needed on line, label and refrigerate (or freeze) the remainder until needed.",
+          ],
+          shelfLife: "5 Days",
+        },
+        {
+          id: 14,
+          name: "Slider Sauce",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Ketchup", amount: "250 ml" },
+            { name: "Mustard", amount: "250 ml" },
+            { name: "Mayonnaise", amount: "500 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until needed.",
+          ],
+          shelfLife: "5 Days",
+        },
+        {
+          id: 15,
+          name: "Spicy Garlic Parm",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Caesar Dressing", amount: "1 L" },
+            { name: "St. Louis Hot Sauce", amount: "½ L" },
+            { name: "Parmesan Cheese", amount: "¼ L" },
+            { name: "Squeezed Lemon Juice", amount: "2 lemons" },
+          ],
+          yield: "2 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until needed.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 16,
+          name: "Sweet Chili Poppyseed",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Sweet Chilli Sauce", amount: "250 ml" },
+            { name: "Poppy Seed Dressing", amount: "750 ml" },
+          ],
+          yield: "1 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until needed.",
+          ],
+          shelfLife: "5 Days",
+        },
+
+        // Veggie Prep
+        {
+          id: 17,
+          name: "Carrot Sticks",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 18,
+          name: "Celery Sticks",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 19,
+          name: "Chopped Romaine",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 20,
+          name: "Diced Green Onions",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 21,
+          name: "Diced Red Peppers",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 22,
+          name: "Diced Tomatoes",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 23,
+          name: "Diced Cucumbers",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 24,
+          name: "Julienne Mashrooms",
+          category: "Veggie Prep",
+          ingredients: [{ name: "Button Mushrooms", amount: "1 box" }],
+          yield: "1 Batch",
+          procedure: [
+            "Cut off mushroom stem on the bottom, then cut mushrooms into very thin slices starting from the edge.",
+            "Place in an insert, label, and refrigerate until ready for use.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 25,
+          name: "Julienne Red Onions",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 26,
+          name: "Lemon Wedges",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 27,
+          name: "Lettuce Blend",
+          category: "Veggie Prep",
+          ingredients: [
+            { name: "Baby Spinach", amount: "½ bag" },
+            { name: "Chopped Romaine", amount: "3 bags" },
+            { name: "Chopped Iceberg Lettuce", amount: "2 heads" },
+          ],
+          yield: "17 Portions",
+          procedure: [
+            "Combine baby spinach, romaine, and iceberg lettuce and mix well.",
+            "Cover, label, and refrigerate until use.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 28,
+          name: "Lettuce Cups",
+          category: "Veggie Prep",
+          ingredients: [{ name: "Iceberg Lettuce", amount: "6 pc" }],
+          yield: "1 Portion",
+          procedure: [
+            "Remove any wilted or damaged outer leaves from the head of iceberg lettuce.",
+            "Place the head of lettuce on a cutting board and use a sharp knife to cut it in half, lengthwise.",
+            "Lay both halves flat-side down on the cutting board and cut each half into thin cups, working your way from one end to the other.",
+            "Use a cold wet paper towel on top of the lettuce to stay fresh on line.",
+            "To store, remove the wet towel, place a dry paper towel, label and refrigerate overnight.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 29,
+          name: "Lime Wedges",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 30,
+          name: "Shredded Carrots",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 31,
+          name: "Shredded Iceberg",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 32,
+          name: "Sliced Cucumbers",
+          category: "Veggie Prep",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 33,
+          name: "Sliced Jalapenos",
+          category: "Veggie Prep",
+          ingredients: [{ name: "Fresh Jalapenos", amount: "6" }],
+          yield: "1 Batch",
+          procedure: [
+            "On a cutting board, take a whole jalapeno and roll it back and forth applying light pressure.",
+            "Thinly slice jalapeno into 1/16th inch slices – as thin as possible while maintaining a full circular shape.",
+            "Once sliced, place jalapenos in a 1/9 pan and submerge in cold water.",
+            "Leave jalapenos submerged in water in the cold table/line fridge during service.",
+            "Change water at the end of each day. Keep insert labelled and refrigerated.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 34,
+          name: "Sliced Tomatoes",
+          category: "Veggie Prep",
+          shelfLife: "2 Days",
+        },
+
+        // Cold Prep
+        {
+          id: 35,
+          name: "Birthday Cake Crumb",
+          category: "Cold Prep",
+          shelfLife: "5 Days",
+        },
+        {
+          id: 36,
+          name: "Brownie Push-In",
+          category: "Cold Prep",
+          shelfLife: "7 Days",
+        },
+        {
+          id: 37,
+          name: "Buttermilk Chicken Breast",
+          category: "Cold Prep",
+          ingredients: [
+            { name: "Chicken Tenders", amount: "10 pc" },
+            { name: "Buttermilk", amount: "500 ml" },
+          ],
+          yield: "10 pc",
+          procedure: [
+            "Place 10 pieces of chicken breast into a 1/3 insert.",
+            "Add 500ml of buttermilk, ensuring they are fully submerged.",
+            "Cover with a lid, label and refrigerate until ordered.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 38,
+          name: "Buttermilk Chicken Tender",
+          category: "Cold Prep",
+          ingredients: [
+            { name: "Chicken Tenders", amount: "1 kg" },
+            { name: "Buttermilk", amount: "500 ml" },
+          ],
+          yield: "19 pc",
+          procedure: [
+            "Place 1kg of chicken tenders into a 1/3 insert and add buttermilk.",
+            "Add 500ml of buttermilk, ensuring they are fully submerged.",
+            "Cover with a lid, label and refrigerate until ordered.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 39,
+          name: "Pickle Coins",
+          category: "Cold Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 40,
+          name: "Calamari",
+          category: "Cold Prep",
+          shelfLife: "2 Days",
+        },
+        {
+          id: 41,
+          name: "Guacamole",
+          category: "Cold Prep",
+          shelfLife: "1 Days",
+        },
+        {
+          id: 42,
+          name: "Honey Buns",
+          category: "Cold Prep",
+          ingredients: [
+            { name: "Slider Buns", amount: "4 pc" },
+            { name: "Garlic Spread", amount: "2 tsp" },
+            { name: "Swiss Cheese", amount: "2 slices" },
+            { name: "Shredded Mozzarella", amount: "3 oz" },
+          ],
+          yield: "1 Portion (of 4)",
+          procedure: [
+            "Open 4 slider buns and spread ¼ tsp of garlic spread on the inside of the top and bottoms (2 tsp total).",
+            "Add 3 oz of shredded mozzarella across the bottom buns evenly.",
+            "Take 2 slices of Swiss cheese and split them in half, then place each piece on top of the mozzarella.",
+            "Close the buns and wrap it with cling film. Label and refrigerate until use.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 43,
+          name: "Pico De Gallo",
+          category: "Cold Prep",
+          ingredients: [
+            { name: "Diced Tomato", amount: "6 lbs" },
+            { name: "Diced Jalapeno", amount: "3 oz" },
+            { name: "Limes (Juiced)", amount: "7 limes" },
+            { name: "Salt", amount: "1/3 oz" },
+            { name: "Diced Green Onion", amount: "16 oz" },
+          ],
+          yield: "29 (4oz) Portions",
+          procedure: [
+            "Combine all ingredients and mix well. Label and refrigerate until use.",
+            "After each service, drain excess liquid from insert before refrigerating overnight.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 44,
+          name: "Red Velvet Cake Crumb",
+          category: "Cold Prep",
+          shelfLife: "5 Days",
+        },
+        { id: 45, name: "Ribs", category: "Cold Prep", shelfLife: "7 Days" },
+        {
+          id: 46,
+          name: "Spinach Dip Mix",
+          category: "Cold Prep",
+          ingredients: [
+            { name: "Cream Cheese", amount: "1.6 kg (1 bag)" },
+            { name: "Alfredo", amount: "1.8 kg (1 bag)" },
+            { name: "Spinach", amount: "1 kg (1 bag)" },
+            { name: "Medium Sauce", amount: "5 fl oz" },
+            { name: "Granulated Garlic", amount: "1 oz" },
+            { name: "Salt", amount: "½ oz" },
+            { name: "Ground Black Pepper", amount: "½ oz" },
+            { name: "Cajun Seasoning", amount: "½ oz" },
+            { name: "Cheese Blend", amount: "4 oz" },
+            { name: "Parmesan Romano", amount: "2 oz" },
+          ],
+          yield: "25 Portions",
+          procedure: [
+            "Defrost spinach overnight when prepping this item.",
+            "Using a towel, lay spinach out then roll towel and squeeze out all excess water – this is a critical step!",
+            "Melt cream cheese and Alfredo sauce in the microwave (approx. 2 minutes each or until soft).",
+            "In large bowl, combine all ingredients and mix with a spatula.",
+            "Once mixed, portion into 7 oz using white takeout gravy bowls or into a large plastic insert.",
+          ],
+          shelfLife: "5 Days",
+          culinaryPrecisionPoints: [
+            "Ensure that all water is removed from the spinach – if it’s not, there will be a runny consistency.",
+            "Squeeze a small amount of spinach before mixing – if water comes out, ring out the spinach until dry.",
+            "When mixing the ingredients ensure there are no clumps left, the consistency should be smooth.",
+          ],
+        },
+
+        // Hot Prep
+        {
+          id: 47,
+          name: "Bacon Bits",
+          category: "Hot Prep",
+          ingredients: [{ name: "Bacon", amount: "1½ lb" }],
+          yield: "1 Batch",
+          procedure: [
+            "Remove bacon from packaging, place strips on a pan and place in TurboChef.",
+            "Press button for 'Bacon' to reheat for 30 seconds. Remove when finished.",
+            "Allow to cool, then chop bacon into small, crumbled pieces.",
+            "Place in a covered insert, label, and refrigerate until use.",
+          ],
+          shelfLife: "7 Days",
+        },
+        {
+          id: 48,
+          name: "Blanched Rigatoni",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Rigatoni Pasta", amount: "1 bag" },
+            { name: "Water", amount: "fill ¾ of the pot" },
+            { name: "Salt", amount: "1 tbsp" },
+            { name: "Canola Oil", amount: "1 tsp" },
+          ],
+          yield: "1 Batch",
+          procedure: [
+            "Fill a pot ¾ full of water, add 1 tbsp of salt and let it come to a boil.",
+            "Pour pasta into boiling water (ensure there is a rolling boil before adding the pasta) and cook for 6 minutes.",
+            "Stir pasta within 1-3 minutes and continue to stir occasionally.",
+            "After 6 minutes, carefully strain pasta using a colander – be gentle to avoid breaking the pasta.",
+            "Place blanched pasta on a large baking sheet in a single layer, drizzle with oil, gently mix, and allow to cool before portioning. Portion, label, and refrigerate until use.",
+          ],
+          shelfLife: "4 Days",
+          culinaryPrecisionPoints: [
+            "Do not overcook the pasta when blanching. The pasta should be ~80% cooked during this process as it will continue to soften/cook during the build process of the pasta dishes.",
+          ],
+        },
+        {
+          id: 49,
+          name: "Brisket",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Beef Brisket", amount: "1 bag (5lb)" },
+            { name: "Mississippi BBQ Sauce", amount: "7½ fl oz" },
+          ],
+          yield: "20 (4oz) Portions",
+          procedure: [
+            "Cut open brisket bag and place over perforated pan/strainer and strain out all excess liquid.",
+            "In a large steel bowl add strained brisket and pull apart, then add BBQ sauce and mix well.",
+            "Once mixed, measure brisket into 4 oz portions using 2lb portion bags.",
+            "Label and refrigerate until ready for use.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 50,
+          name: "fried Tortilla Straws",
+          category: "Hot Prep",
+          ingredients: [
+            { name: '12" Flour Tortilla', amount: "1 each" },
+            { name: "Cajun Spice", amount: "½ tsp" },
+          ],
+          yield: "6 Portions",
+          procedure: [
+            "Cut a 12” tortilla in half down the centre.",
+            "Roll tortilla halves several times over to create a tube.",
+            "Slice tortilla thinly (julienne) 1/8 inch wide.",
+            "Separate all pieces and place in fryer basket.",
+            "Immerse in oil and cook for 30 seconds at 350°F.",
+            "Finished product should be golden brown.",
+            "Remove from oil; drain excess oil then remove from fryer basket and place into a mixing bowl.",
+            "Season with Cajun spice immediately.",
+            "Allow to cool uncovered.",
+            "Once cooled, cover, label and store at room temperature until needed.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 51,
+          name: "Gravy",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Gravy", amount: "1 bag" },
+            { name: "Water", amount: "4 L" },
+          ],
+          yield: "3½ L",
+          procedure: [
+            "Add 4 litres of water to a pot.",
+            "Place pot on stove and turn stove to high heat (reduce temp to medium heat after a few minutes).",
+            "Add 1 pouch of gravy to water and stir vigorously with a whisk.",
+            "Heat for 5-10 minutes, until an internal temperature of 165°F is reached.",
+            "Remove from stove and carefully pour gravy into insert in food warmer/baine-marie/steam table.",
+            "Prep for each meal period.",
+            "Safely store, label, and refrigerate leftover gravy at the end of each day.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 52,
+          name: "Julienne Chicken",
+          category: "Hot Prep",
+          shelfLife: "4 Days",
+        },
+        {
+          id: 53,
+          name: "Nacho Beef",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Angus Beef Patty", amount: "1 each" },
+            { name: "Mississippi BBQ Sauce", amount: "1 fl oz" },
+          ],
+          yield: "1 Portion",
+          procedure: [
+            "On flattop or sauté pan, place beef patty over medium-high heat and break up with tongs or spatula.",
+            "Once the patty is broken up and about 85% cooked, add Mississippi BBQ and cook for another minute.",
+            "Once cooked, place nacho beef in a portion bag, label, and refrigerate until use.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 54,
+          name: "Nacho Chips",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Corn Tortilla Chips", amount: "3 lbs" },
+            { name: "Lawny’s Seasoning Salt", amount: "¾ oz" },
+          ],
+          yield: "12 (4oz) Bags",
+          procedure: [
+            "Separate frozen tortilla chips and place in deep fryer basket.",
+            "Immerse in oil and cook for 45 seconds at 350°F – chips should be golden brown.",
+            "Remove from oil; drain excess oil then transfer into a mixing bowl.",
+            "Add seasoning salt to chips and toss to ensure an even spread.",
+            "Transfer to a covered insert, label, and store at room temperature until use.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 55,
+          name: "Peppercorn Sauce",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Gray", amount: "1 L" },
+            { name: "Horseradish", amount: "1 fl oz" },
+            { name: "Water", amount: "4 fl oz" },
+            { name: "Black Ground Pepper", amount: "1 tsp" },
+          ],
+          yield: "1.1 L",
+          procedure: [
+            "Place 1 litre of gravy in a pot and heat to a simmer.",
+            "Add water, horseradish, and black pepper.",
+            "Let simmer on low heat for about 5 minutes, allowing the flavors to melt together – stir occasionally.",
+            "Remove from stove and carefully pour sauce into insert in food warmer/baine-marie/steam table.",
+            "If you are not hot-holding in a baine-marie/steam table, allow sauce to cool down (following the ice bath procedure).",
+            "Transfer sauce into a plastic insert, cover, label, and refrigerate at the end of each day.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 56,
+          name: "Queso Cheese",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Queso", amount: "1 can (3 kg)" },
+            { name: "Water", amount: "1000 ml" },
+          ],
+          yield: "1 Batch",
+          procedure: [
+            "Open 1 can of queso cheese and pour into a large pot on stove over medium heat.",
+            "Add 1000ml of water, mix well, and bring to a simmer. Continue to heat for approximately 5 minutes.",
+            "Remove from stove and carefully pour into an insert in a food warmer/baine-marie/steam table.",
+            "Transfer sauce into a plastic insert, cover, label, and refrigerate at the end of each day.",
+          ],
+          shelfLife: "7 Days",
+        },
+        { id: 57, name: "Quinoa", category: "Hot Prep", shelfLife: "4 Days" },
+        {
+          id: 58,
+          name: "Rice",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Basmati Rice", amount: "3 cups" },
+            { name: "Water", amount: "4½ cup" },
+            { name: "Garlic Spread", amount: "3 tbsp" },
+            { name: "Salt", amount: "¾ tsp" },
+          ],
+          yield: "9 Portions",
+          procedure: [
+            "Measure 3 cups of rice and place it in a strainer, then rinse it under cold water until the water runs clear.",
+            "Transfer the rinsed rice to the rice cooker pot, then add water and salt and turn on the rice cooker.",
+            "It will automatically switch to 'warm' mode once cooked (this usually takes about 20-30 minutes).",
+            "Once rice is cooked, place on baking tray and allow to cool.",
+            "Once cooled, measure rice into 5 oz portions and transfer into a 4lb portion bag.",
+            "Add 1 tsp of garlic spread into each bag, then roll the bags up and keep them in a plastic insert.",
+            "Label and refrigerate until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 59,
+          name: "Searing Steak",
+          category: "Hot Prep",
+          ingredients: [
+            { name: "Steak", amount: "1" },
+            { name: "Montreal Steak Spice", amount: "a pinch" },
+          ],
+          yield: "1 Portion",
+          procedure: [
+            "Cut steak out of the seal and pat dry with a paper towel.",
+            "Season steak on both sides with a pinch of Montreal Steak Spice.",
+            "Place steak on the grill and cook for 45 seconds, then rotate steak 90 degrees and cook for another 45 seconds (approximately 90 seconds total for the first side).",
+            "Flip steak and repeat the above step (cook for 45 seconds, rotate 90 degrees, and cook for another 45 seconds).",
+            "Remove steak from grill and let it rest for 5 minutes.",
+            "Transfer steak into a 4lb portion bag, label and refrigerate until use.",
+          ],
+          shelfLife: "2 Days",
+          culinaryPrecisionPoints: [
+            "The purpose of pre-searing is not to fully cook the steak, but to add seasoning/char flavour.",
+            "You don’t want to cook the steak past blue-rare during this process.",
+            "Depending on the level of heat of your grill, the pre-searing time may need to be adjusted/increased.",
+          ],
+        },
+        {
+          id: 60,
+          name: "Spinach Dip Chips",
+          category: "Hot Prep",
+          ingredients: [
+            { name: '12" Flour Tortilla', amount: "2 pc" },
+            { name: "Cajun Spice", amount: "¼ fl oz" },
+          ],
+          yield: "16 pc",
+          procedure: [
+            'Place two 12" tortillas on top of each other, then cut them in half.',
+            "Cut each half into quarters, then cut each quarter in half again.",
+            "You should have a total of 8 slices from each tortilla (16 chips total).",
+            "Separate the pieces from each other, add to fryer basket and fry for approx. 45 seconds at 350°F.",
+            "Chips should be golden brown and crispy.",
+            "Once cooked, lift basket and drain excess oil.",
+            "Allow chips to cool uncovered, then add Cajun spice and mix thoroughly.",
+            "Label and store them in a dry place.",
+          ],
+          shelfLife: "4 Days",
+        },
+
+        // Portioning
+        {
+          id: 61,
+          name: "Battered Cheese Curds",
+          category: "Portioning",
+          shelfLife: "Frozen",
+        },
+        {
+          id: 62,
+          name: "Buttermilk Pickle Coins",
+          category: "Portioning",
+          ingredients: [
+            { name: "Pickle Coins", amount: "5 oz" },
+            { name: "Buttermilk", amount: "1 fl oz" },
+          ],
+          yield: "1 Portion",
+          procedure: [
+            "In a portion bag, place 5 oz of pickle coins (approx.15-20 coins).",
+            "Add buttermilk and carefully roll them without spilling any buttermilk.",
+            "Place the rolled-up portions into a plastic insert, label and refrigerate until use.",
+          ],
+          shelfLife: "7",
+        },
+        {
+          id: 63,
+          name: "Beef Brisket",
+          category: "Portioning",
+          shelfLife: "4 Days",
+        },
+        {
+          id: 64,
+          name: "Boneless Wings",
+          category: "Portioning",
+          shelfLife: "Frozen",
+        },
+        {
+          id: 65,
+          name: "Calamari/Veggies",
+          category: "Portioning",
+          ingredients: [
+            { name: "Pickled Banana Peppers", amount: "2 oz" },
+            { name: "Julienne Red Onion", amount: "1 oz" },
+          ],
+          yield: "1 Portion",
+          procedure: [
+            "Place 2 oz of banana peppers and 1 oz of julienne red onions into a portion bag.",
+            "Label and refrigerate until ordered.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 66,
+          name: "Cheese Curds",
+          category: "Portioning",
+          shelfLife: "6 Days",
+        },
+        {
+          id: 67,
+          name: "Goat Cheese",
+          category: "Portioning",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 68,
+          name: "Chicken Lettuce cup Veggies",
+          category: "Portioning",
+          ingredients: [
+            { name: "Carrot Sticks", amount: "1 oz" },
+            { name: "Julienne Red Onions", amount: "½ oz" },
+            { name: "Diced Red Pepper", amount: "1 oz" },
+          ],
+          yield: "1 Portion",
+          procedure: [
+            "Combine carrots, julienne red onions, and diced red pepper into a 2lb portion bag.",
+            "Label and refrigerate until ordered.",
+          ],
+          shelfLife: "3 Days",
+        },
+        {
+          id: 69,
+          name: "Mixed Cheese",
+          category: "Portioning",
+          shelfLife: "5 Days",
+        },
+        {
+          id: 70,
+          name: "Pasta/Shrimp Bowl Veggies",
+          category: "Portioning",
+          ingredients: [
+            { name: "Julienne Mushrooms", amount: "1 oz" },
+            { name: "Julienne Red Onions", amount: "1 oz" },
+            { name: "Diced Red Pepper", amount: "1 oz" },
+          ],
+          yield: "1 (3oz) Portion",
+          procedure: [
+            "In a portion bag, combine equal parts of mushrooms, red onions, and red peppers into 3 oz portions.",
+            "Label and refrigerate until use.",
+          ],
+          shelfLife: "3 Days",
+        },
+        { id: 71, name: "Quinoa", category: "Portioning", shelfLife: "4 Days" },
+        { id: 72, name: "Rice", category: "Portioning", shelfLife: "3 Days" },
+        {
+          id: 73,
+          name: "Shredded Mozzarella",
+          category: "Portioning",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 74,
+          name: "Sweet Potato Fries",
+          category: "Portioning",
+          shelfLife: "Frozen",
+        },
+        {
+          id: 75,
+          name: "Plant-Based Wings",
+          category: "Portioning",
+          shelfLife: "Frozen",
+        },
+
+        //Raw Product
+        {
+          id: 76,
+          name: "Burgers",
+          category: "Raw Product",
+          shelfLife: "5 Days",
+        },
+        {
+          id: 77,
+          name: "Chicken Breast",
+          category: "Raw Product",
+          shelfLife: "5 Days",
+        },
+        {
+          id: 78,
+          name: "Chicken Tenders",
+          category: "Raw Product",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 79,
+          name: "Shrimp",
+          category: "Raw Product",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 80,
+          name: "Slider Patties",
+          category: "Raw Product",
+          shelfLife: "3 Days",
+        },
+        { id: 81, name: "Steak", category: "Raw Product", shelfLife: "5 Days" },
+        { id: 82, name: "Squid", category: "Raw Product", shelfLife: "2 Days" },
+        { id: 83, name: "Wings", category: "Raw Product", shelfLife: "5 Days" },
+
+        //Cooked Product
+        {
+          id: 84,
+          name: "Back Ribs",
+          category: "Cooked Product",
+          shelfLife: "7 Days",
+        },
+        {
+          id: 85,
+          name: "Bacon",
+          category: "Cooked Product",
+          shelfLife: "7 Days",
+        },
+        {
+          id: 86,
+          name: "Brisket",
+          category: "Cooked Product",
+          shelfLife: "4 Days",
+        },
+        {
+          id: 87,
+          name: "Pepperoni",
+          category: "Cooked Product",
+          shelfLife: "7 Days",
+        },
+
+        //Other
+        { id: 88, name: "Alfredo", category: "Other", shelfLife: "4 Days" },
+        {
+          id: 89,
+          name: "Cheeese Curds",
+          category: "Other",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 90,
+          name: "Cream Cheese",
+          category: "Other",
+          shelfLife: "14 Days",
+        },
+        {
+          id: 91,
+          name: "Guacamole",
+          category: "Other",
+          ingredients: [
+            { name: "Avocado Pulp", amount: "1 bag" },
+            { name: "Diced Tomato", amount: "1 oz" },
+            { name: "Julienne Red Onion", amount: "1 oz" },
+            { name: "Diced Jalapenos", amount: "1 oz" },
+            { name: "Chopped Cilantro", amount: "1/8 oz" },
+            { name: "Limes (Juiced)", amount: "½ each" },
+            { name: "Sea Salt", amount: "½ oz" },
+            { name: "Cracked Black Pepper", amount: "½ oz" },
+          ],
+          yield: "8 (3oz) Portions",
+          procedure: [
+            "Combine all ingredients and mix well.",
+            "Label and refrigerate in a plastic insert until use.",
+          ],
+          shelfLife: "2 Days",
+        },
+        {
+          id: 92,
+          name: "Margarita Mix",
+          category: "Other",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 93,
+          name: "Nacho Chips",
+          category: "Other",
+          shelfLife: "30 Days",
+        },
+        { id: 94, name: "Pesto", category: "Other", shelfLife: "2 Days" },
+        { id: 95, name: "Spinach", category: "Other", shelfLife: "2 Days" },
+
+        //Bakery
+        {
+          id: 96,
+          name: '12" Tortilla',
+          category: "Bakery",
+          shelfLife: "30 Days",
+        },
+        {
+          id: 97,
+          name: "Brioche Buns",
+          category: "Bakery",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 98,
+          name: "Vanilla Cake",
+          category: "Bakery",
+          shelfLife: "7 Days",
+        },
+        { id: 99, name: "Cheesecake", category: "Bakery", shelfLife: "5 Days" },
+        {
+          id: 100,
+          name: "Panini Rolls",
+          category: "Bakery",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 101,
+          name: "Pizza Crust",
+          category: "Bakery",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 102,
+          name: "Potato Buns",
+          category: "Bakery",
+          shelfLife: "3 Days",
+        },
+        {
+          id: 103,
+          name: "Red Velvet Cake",
+          category: "Bakery",
+          shelfLife: "7 Days",
+        },
+        {
+          id: 104,
+          name: "Slider Buns",
+          category: "Bakery",
+          shelfLife: "5 Days",
+        },
+        {
+          id: 105,
+          name: "Julienne Cooked Chicken Breast",
+          category: "Cooked Product",
+          ingredients: [
+            { name: "Chicken Breast", amount: "10 pc" },
+            { name: "Cajun Spice", amount: "1 tbsp" },
+            { name: "Canola Oil", amount: "2 fl oz" },
+          ],
+          yield: "10 (4oz) Portions",
+          procedure: [
+            "Place chicken, oil and Cajun spice in bowl and mix well so all breasts are coated.",
+            "Place chicken breast on the grill/flattop and cook for 3 minutes on either side (6 minutes total).",
+            "When an internal temperature of 165°F is reached, take chicken off the grill and allow it to cool.",
+            "Once chicken has cooled, cut thinly into 1/6th-inch strips (cut along the long side of chicken breast).",
+            "Portion chicken into 4 oz using 2lb portion bags, label, and refrigerate until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+        {
+          id: 106,
+          name: "Garlic Parm",
+          category: "Sauce Prep",
+          ingredients: [
+            { name: "Caesar Dressing", amount: "1 L" },
+            { name: "Parmesan Cheese", amount: "½ L" },
+          ],
+          yield: "2 L",
+          procedure: [
+            "Combine all ingredients and mix well. Transfer quantity needed on line into a squeeze bottle.",
+            "Label and refrigerate any extra in an airtight container/insert until use.",
+          ],
+          shelfLife: "4 Days",
+        },
+      ];
+
+      // Save data to localStorage
+      function saveData() {
+        localStorage.setItem("foodItems", JSON.stringify(foodItems));
+      }
+
+      // Load data from localStorage if exists
+      function loadData() {
+        const storedData = localStorage.getItem("foodItems");
+        if (storedData) {
+          foodItems = JSON.parse(storedData);
+        } else {
+          // First time, save the initial data
+          saveData();
+        }
+      }
+
+      // Load the data
+      loadData();
+
+      // Function to calculate due date based on shelf life
+      function calculateDueDate(shelfLife) {
+        if (
+          shelfLife.toLowerCase().includes("frozen") ||
+          isNaN(parseInt(shelfLife))
+        ) {
+          return shelfLife; // Return as is if it's "Frozen" or not a number
+        }
+
+        const days = parseInt(shelfLife);
+        const dueDate = new Date(today);
+        dueDate.setDate(dueDate.getDate() + days);
+
+        return dueDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      // Function to determine date status for styling
+      function getDateStatus(shelfLife) {
+        if (
+          shelfLife.toLowerCase().includes("frozen") ||
+          isNaN(parseInt(shelfLife))
+        ) {
+          return "date-good";
+        }
+
+        const days = parseInt(shelfLife);
+        if (days <= 2) {
+          return "date-warning";
+        } else if (days <= 4) {
+          return "date-approaching";
+        } else {
+          return "date-good";
+        }
+      }
+
+      // Get unique categories
+      function getCategories() {
+        return [...new Set(foodItems.map((item) => item.category))].sort();
+      }
+
+      // Add filter buttons
+      function setupFilterButtons() {
+        const filterContainer = document.getElementById("filterContainer");
+        // Clear existing filters (except All Items)
+        const allItemsBtn = filterContainer.querySelector(
+          '[data-category="all"]'
+        );
+        filterContainer.innerHTML = "";
+        filterContainer.appendChild(allItemsBtn);
+
+        // Add category filters
+        getCategories().forEach((category) => {
+          const btn = document.createElement("button");
+          btn.className = "filter-btn";
+          btn.textContent = category;
+          btn.dataset.category = category;
+          filterContainer.appendChild(btn);
+        });
+
+        // Add event listeners for filtering
+        document.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document
+              .querySelectorAll(".filter-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const category = btn.dataset.category;
+            const searchTerm = document.getElementById("searchInput").value;
+            renderItems(category, searchTerm);
+          });
+        });
+      }
+
+      // Populate category dropdown in the form
+      function populateCategoryDropdown() {
+        const categorySelect = document.getElementById("itemCategory");
+        // Clear existing options except the first placeholder
+        categorySelect.innerHTML =
+          '<option value="">Select a category</option>';
+
+        // Add options for each category
+        getCategories().forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+
+      // Function to render items based on category and search
+      function renderItems(category = "all", searchTerm = "") {
+        const itemsContainer = document.getElementById("itemsContainer");
+        itemsContainer.innerHTML = "";
+
+        // Filter items based on category and search
+        let filteredItems = foodItems;
+
+        if (category !== "all") {
+          filteredItems = filteredItems.filter(
+            (item) => item.category === category
+          );
+        }
+
+        if (searchTerm) {
+          const term = searchTerm.toLowerCase();
+          filteredItems = filteredItems.filter(
+            (item) =>
+              item.name.toLowerCase().includes(term) ||
+              item.category.toLowerCase().includes(term) ||
+              item.shelfLife.toLowerCase().includes(term)
+          );
+        }
+
+        // Group by category
+        const itemsByCategory = {};
+        filteredItems.forEach((item) => {
+          if (!itemsByCategory[item.category]) {
+            itemsByCategory[item.category] = [];
+          }
+          itemsByCategory[item.category].push(item);
+        });
+
+        // Check if no results
+        if (Object.keys(itemsByCategory).length === 0) {
+          const noResults = document.createElement("div");
+          noResults.className = "no-results";
+          noResults.textContent =
+            "No items found. Try a different search or filter.";
+          itemsContainer.appendChild(noResults);
+          return;
+        }
+
+        // Sort categories
+        const sortedCategories = Object.keys(itemsByCategory).sort();
+
+        // Create category sections
+        sortedCategories.forEach((category, categoryIndex) => {
+          const items = itemsByCategory[category];
+
+          const categorySection = document.createElement("div");
+          categorySection.className = "category";
+
+          const categoryHeader = document.createElement("div");
+          categoryHeader.className = "category-header";
+          categoryHeader.innerHTML = `
           ${category} <span class="item-count">${items.length} items</span>
         `;
-        
-        const itemList = document.createElement('div');
-        itemList.className = 'item-list';
-        
-        // Create item cards
-        items.forEach((item, itemIndex) => {
-          const dueDate = calculateDueDate(item.shelfLife);
-          const dateStatus = getDateStatus(item.shelfLife);
-          
-          const itemCard = document.createElement('div');
-          itemCard.className = 'item-card';
-          itemCard.style.setProperty('--i', categoryIndex * 10 + itemIndex);
-          
-          // Card content wrapper for swipe functionality
-          const cardContent = document.createElement('div');
-          cardContent.className = 'card-content';
-          
-          cardContent.innerHTML = `
+
+          const itemList = document.createElement("div");
+          itemList.className = "item-list";
+
+          // Create item cards
+          items.forEach((item, itemIndex) => {
+            const dueDate = calculateDueDate(item.shelfLife);
+            const dateStatus = getDateStatus(item.shelfLife);
+
+            const itemCard = document.createElement("div");
+            itemCard.className = "item-card";
+            itemCard.style.setProperty("--i", categoryIndex * 10 + itemIndex);
+
+            // Card content wrapper for swipe functionality
+            const cardContent = document.createElement("div");
+            cardContent.className = "card-content";
+
+            cardContent.innerHTML = `
           <div class="item-name">${item.name}</div>
           <div class="item-info">
             <div class="info-row">
@@ -921,286 +2198,330 @@
             </div>
           </div>
         `;
-          
-          // CRUD buttons
-          const crudButtons = document.createElement('div');
-          crudButtons.className = 'crud-buttons';
-          crudButtons.innerHTML = `
+
+            // CRUD buttons
+            const crudButtons = document.createElement("div");
+            crudButtons.className = "crud-buttons";
+            crudButtons.innerHTML = `
             <button class="edit-btn" data-id="${item.id}">Edit</button>
             <button class="delete-btn" data-id="${item.id}">Delete</button>
           `;
-          
-          // Add swipe functionality
-          let startX;
-          let currentX;
 
-          itemCard.addEventListener('touchstart', e => {
-            startX = e.touches[0].clientX;
-          });
+            // Add swipe functionality
+            let startX;
+            let currentX;
 
-          itemCard.addEventListener('touchmove', e => {
-            currentX = e.touches[0].clientX;
-            const diffX = startX - currentX; // Change: Swipe from right to left
+            itemCard.addEventListener("touchstart", (e) => {
+              startX = e.touches[0].clientX;
+            });
 
-            if (diffX > 0) {  // Only allow left swipe
-              cardContent.style.transform = `translateX(${Math.min(-diffX, 100)}px)`; // Change: Negative translation
-            }
-          });
-
-          itemCard.addEventListener('touchend', e => {
-            const diffX = startX - currentX; // Change: Swipe from right to left
-
-            if (diffX > 50) {  // Threshold to show buttons
-              cardContent.style.transform = 'translateX(-100px)'; // Change: Negative translation
-              itemCard.classList.add('swiped');
-            } else {
-              cardContent.style.transform = 'translateX(0)';
-              itemCard.classList.remove('swiped');
-            }
-          });
-
-          // For desktop/mouse users
-          itemCard.addEventListener('mousedown', e => {
-            startX = e.clientX;
-
-            const onMouseMove = e => {
-              currentX = e.clientX;
+            itemCard.addEventListener("touchmove", (e) => {
+              currentX = e.touches[0].clientX;
               const diffX = startX - currentX; // Change: Swipe from right to left
 
-              if (diffX > 0) {  // Only allow left swipe
-                cardContent.style.transform = `translateX(${Math.min(-diffX, 100)}px)`; // Change: Negative translation
+              if (diffX > 0) {
+                // Only allow left swipe
+                cardContent.style.transform = `translateX(${Math.min(
+                  -diffX,
+                  100
+                )}px)`; // Change: Negative translation
               }
-            };
+            });
 
-            const onMouseUp = e => {
+            itemCard.addEventListener("touchend", (e) => {
               const diffX = startX - currentX; // Change: Swipe from right to left
 
-              if (diffX > 50) {  // Threshold to show buttons
-                cardContent.style.transform = 'translateX(-100px)'; // Change: Negative translation
-                itemCard.classList.add('swiped');
+              if (diffX > 50) {
+                // Threshold to show buttons
+                cardContent.style.transform = "translateX(-100px)"; // Change: Negative translation
+                itemCard.classList.add("swiped");
               } else {
-                cardContent.style.transform = 'translateX(0)';
-                itemCard.classList.remove('swiped');
+                cardContent.style.transform = "translateX(0)";
+                itemCard.classList.remove("swiped");
               }
+            });
 
-              document.removeEventListener('mousemove', onMouseMove);
-              document.removeEventListener('mouseup', onMouseUp);
-            };
+            // For desktop/mouse users
+            itemCard.addEventListener("mousedown", (e) => {
+              startX = e.clientX;
 
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+              const onMouseMove = (e) => {
+                currentX = e.clientX;
+                const diffX = startX - currentX; // Change: Swipe from right to left
+
+                if (diffX > 0) {
+                  // Only allow left swipe
+                  cardContent.style.transform = `translateX(${Math.min(
+                    -diffX,
+                    100
+                  )}px)`; // Change: Negative translation
+                }
+              };
+
+              const onMouseUp = (e) => {
+                const diffX = startX - currentX; // Change: Swipe from right to left
+
+                if (diffX > 50) {
+                  // Threshold to show buttons
+                  cardContent.style.transform = "translateX(-100px)"; // Change: Negative translation
+                  itemCard.classList.add("swiped");
+                } else {
+                  cardContent.style.transform = "translateX(0)";
+                  itemCard.classList.remove("swiped");
+                }
+
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+              };
+
+              document.addEventListener("mousemove", onMouseMove);
+              document.addEventListener("mouseup", onMouseUp);
+            });
+
+            // Append children
+            itemCard.appendChild(cardContent);
+            itemCard.appendChild(crudButtons);
+            itemList.appendChild(itemCard);
           });
-          
-          // Append children
-          itemCard.appendChild(cardContent);
-          itemCard.appendChild(crudButtons);
-          itemList.appendChild(itemCard);
+
+          categorySection.appendChild(categoryHeader);
+          categorySection.appendChild(itemList);
+          itemsContainer.appendChild(categorySection);
         });
-        
-        categorySection.appendChild(categoryHeader);
-        categorySection.appendChild(itemList);
-        itemsContainer.appendChild(categorySection);
-      });
-      
-      // Add event listeners for CRUD buttons
-      document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          const itemId = parseInt(btn.dataset.id);
-          showPasswordOverlay('edit', itemId);
+
+        // Add event listeners for CRUD buttons
+        document.querySelectorAll(".edit-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const itemId = parseInt(btn.dataset.id);
+            showPasswordOverlay("edit", itemId);
+          });
         });
-      });
-      
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          const itemId = parseInt(btn.dataset.id);
-          showPasswordOverlay('delete', itemId);
+
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const itemId = parseInt(btn.dataset.id);
+            showPasswordOverlay("delete", itemId);
+          });
         });
-      });
-    }
-    
-    // Function to show password overlay
-    function showPasswordOverlay(action, itemId) {
-      const passwordOverlay = document.getElementById('passwordOverlay');
-      passwordOverlay.style.display = 'flex';
-      
-      // Store action and itemId in the overlay element
-      passwordOverlay.dataset.action = action;
-      passwordOverlay.dataset.itemId = itemId;
-      
-      // Focus the input
-      document.getElementById('passwordInput').focus();
-    }
-    
-    // Function to hide password overlay
-    function hidePasswordOverlay() {
-      const passwordOverlay = document.getElementById('passwordOverlay');
-      passwordOverlay.style.display = 'none';
-      document.getElementById('passwordInput').value = '';
-    }
-    
-    // Function to check password and perform action
-    function checkPassword() {
-      const password = document.getElementById('passwordInput').value;
-      const correctPassword = '1111';
-      
-      if (password === correctPassword) {
-        const passwordOverlay = document.getElementById('passwordOverlay');
-        const action = passwordOverlay.dataset.action;
-        const itemId = parseInt(passwordOverlay.dataset.itemId);
-        
-        if (action === 'edit') {
-          openEditModal(itemId);
-        } else if (action === 'delete') {
-          deleteItem(itemId);
-        } else if (action === 'add') {
-          openEditModal();
-        }
-        
-        hidePasswordOverlay();
-      } else {
-        alert('Incorrect password. Please try again.');
       }
-    }
-    
-    // Function to open edit modal
-    function openEditModal(itemId = null) {
-      const modal = document.getElementById('itemModal');
-      const modalTitle = document.getElementById('modalTitle');
-      const itemForm = document.getElementById('itemForm');
-      
-      // Populate category dropdown
-      populateCategoryDropdown();
-      
-      // Reset form
-      itemForm.reset();
-      
-      if (itemId) {
-        // Edit existing item
-        modalTitle.textContent = 'Edit Item';
-        const item = foodItems.find(item => item.id === itemId);
-        
-        if (item) {
-          document.getElementById('itemId').value = item.id;
-          document.getElementById('itemName').value = item.name;
-          document.getElementById('itemCategory').value = item.category;
-          document.getElementById('itemShelfLife').value = item.shelfLife;
-        }
-      } else {
-        // Add new item
-        modalTitle.textContent = 'Add New Item';
-        document.getElementById('itemId').value = '';
+
+      // Function to show password overlay
+      function showPasswordOverlay(action, itemId) {
+        const passwordOverlay = document.getElementById("passwordOverlay");
+        passwordOverlay.style.display = "flex";
+
+        // Store action and itemId in the overlay element
+        passwordOverlay.dataset.action = action;
+        passwordOverlay.dataset.itemId = itemId;
+
+        // Focus the input
+        document.getElementById("passwordInput").focus();
       }
-      
-      modal.style.display = 'flex';
-    }
-    
-    // Function to close modal
-    function closeModal() {
-      const modal = document.getElementById('itemModal');
-      modal.style.display = 'none';
-    }
-    
-    // Function to save item
-    function saveItem(e) {
-      e.preventDefault();
-      
-      const itemId = document.getElementById('itemId').value;
-      const name = document.getElementById('itemName').value;
-      const category = document.getElementById('itemCategory').value;
-      const shelfLife = document.getElementById('itemShelfLife').value;
-      
-      if (itemId) {
-        // Update existing item
-        const index = foodItems.findIndex(item => item.id === parseInt(itemId));
-        
+
+      // Function to hide password overlay
+      function hidePasswordOverlay() {
+        const passwordOverlay = document.getElementById("passwordOverlay");
+        passwordOverlay.style.display = "none";
+        document.getElementById("passwordInput").value = "";
+      }
+
+      // Function to check password and perform action
+      function checkPassword() {
+        const password = document.getElementById("passwordInput").value;
+        const correctPassword = "1111";
+
+        if (password === correctPassword) {
+          const passwordOverlay = document.getElementById("passwordOverlay");
+          const action = passwordOverlay.dataset.action;
+          const itemId = parseInt(passwordOverlay.dataset.itemId);
+
+          if (action === "edit") {
+            openEditModal(itemId);
+          } else if (action === "delete") {
+            deleteItem(itemId);
+          } else if (action === "add") {
+            openEditModal();
+          }
+
+          hidePasswordOverlay();
+        } else {
+          alert("Incorrect password. Please try again.");
+        }
+      }
+
+      // Function to open edit modal
+      function openEditModal(itemId = null) {
+        const modal = document.getElementById("itemModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const itemForm = document.getElementById("itemForm");
+
+        // Populate category dropdown
+        populateCategoryDropdown();
+
+        // Reset form
+        itemForm.reset();
+
+        if (itemId) {
+          // Edit existing item
+          modalTitle.textContent = "Edit Item";
+          const item = foodItems.find((item) => item.id === itemId);
+
+          if (item) {
+            document.getElementById("itemId").value = item.id;
+            document.getElementById("itemName").value = item.name;
+            document.getElementById("itemCategory").value = item.category;
+            document.getElementById("itemShelfLife").value = item.shelfLife;
+          }
+        } else {
+          // Add new item
+          modalTitle.textContent = "Add New Item";
+          document.getElementById("itemId").value = "";
+        }
+
+        modal.style.display = "flex";
+      }
+
+      // Function to close modal
+      function closeModal() {
+        const modal = document.getElementById("itemModal");
+        modal.style.display = "none";
+      }
+
+      // Function to save item
+      function saveItem(e) {
+        e.preventDefault();
+
+        const itemId = document.getElementById("itemId").value;
+        const name = document.getElementById("itemName").value;
+        const category = document.getElementById("itemCategory").value;
+        const shelfLife = document.getElementById("itemShelfLife").value;
+
+        if (itemId) {
+          // Update existing item
+          const index = foodItems.findIndex(
+            (item) => item.id === parseInt(itemId)
+          );
+
+          if (index !== -1) {
+            foodItems[index].name = name;
+            foodItems[index].category = category;
+            foodItems[index].shelfLife = shelfLife;
+          }
+        } else {
+          // Add new item with a new ID
+          const newId = Math.max(...foodItems.map((item) => item.id), 0) + 1;
+
+          foodItems.push({
+            id: newId,
+            name,
+            category,
+            shelfLife,
+          });
+        }
+
+        // Save to localStorage
+        saveData();
+
+        // Refresh UI
+        setupFilterButtons();
+
+        // Get current filter and search
+        const activeCategory =
+          document.querySelector(".filter-btn.active").dataset.category;
+        const searchTerm = document.getElementById("searchInput").value;
+
+        renderItems(activeCategory, searchTerm);
+        closeModal();
+      }
+
+      // Function to delete item
+      function deleteItem(itemId) {
+        const index = foodItems.findIndex((item) => item.id === itemId);
+
         if (index !== -1) {
-          foodItems[index].name = name;
-          foodItems[index].category = category;
-          foodItems[index].shelfLife = shelfLife;
+          if (
+            confirm(
+              `Are you sure you want to delete "${foodItems[index].name}"?`
+            )
+          ) {
+            foodItems.splice(index, 1);
+
+            // Save to localStorage
+            saveData();
+
+            // Refresh UI
+            const activeCategory =
+              document.querySelector(".filter-btn.active").dataset.category;
+            const searchTerm = document.getElementById("searchInput").value;
+
+            renderItems(activeCategory, searchTerm);
+          }
         }
-      } else {
-        // Add new item with a new ID
-        const newId = Math.max(...foodItems.map(item => item.id), 0) + 1;
-        
-        foodItems.push({
-          id: newId,
-          name,
-          category,
-          shelfLife
+      }
+
+      // Initialize the app
+      function initApp() {
+        // Set up event listeners
+        const searchInput = document.getElementById("searchInput");
+        searchInput.addEventListener("input", () => {
+          const activeCategory =
+            document.querySelector(".filter-btn.active").dataset.category;
+          renderItems(activeCategory, searchInput.value);
         });
+
+        // Add Item button
+        document.getElementById("addItemBtn").addEventListener("click", () => {
+          showPasswordOverlay("add");
+        });
+
+        // Modal events
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("cancelForm")
+          .addEventListener("click", closeModal);
+        window.addEventListener("click", closeModal);
+        document
+          .getElementById("itemForm")
+          .addEventListener("submit", saveItem);
+
+        // Password events
+        document
+          .getElementById("cancelPassword")
+          .addEventListener("click", hidePasswordOverlay);
+        document
+          .getElementById("submitPassword")
+          .addEventListener("click", checkPassword);
+        document
+          .getElementById("passwordInput")
+          .addEventListener("keyup", (e) => {
+            if (e.key === "Enter") {
+              checkPassword();
+            }
+          });
+        // Add click event for recipe cards
+        document.addEventListener("click", function (e) {
+          const card = e.target.closest(".item-card");
+          if (card && !e.target.closest(".crud-buttons")) {
+            const itemId = parseInt(card.querySelector(".edit-btn").dataset.id);
+            openRecipeModal(itemId);
+          }
+        });
+
+        // Add event listener for closing recipe modal
+        document
+          .getElementById("closeRecipeModal")
+          .addEventListener("click", closeRecipeModal);
+        // Initial setup
+        setupFilterButtons();
+        renderItems();
       }
-      
-      // Save to localStorage
-      saveData();
-      
-      // Refresh UI
-      setupFilterButtons();
-      
-      // Get current filter and search
-      const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
-      const searchTerm = document.getElementById('searchInput').value;
-      
-      renderItems(activeCategory, searchTerm);
-      closeModal();
-    }
-    
-    // Function to delete item
-    function deleteItem(itemId) {
-      const index = foodItems.findIndex(item => item.id === itemId);
-      
-      if (index !== -1) {
-        if (confirm(`Are you sure you want to delete "${foodItems[index].name}"?`)) {
-          foodItems.splice(index, 1);
-          
-          // Save to localStorage
-          saveData();
-          
-          // Refresh UI
-          const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
-          const searchTerm = document.getElementById('searchInput').value;
-          
-          renderItems(activeCategory, searchTerm);
-        }
-      }
-    }
-    
-    // Initialize the app
-    function initApp() {
-      // Set up event listeners
-      const searchInput = document.getElementById('searchInput');
-      searchInput.addEventListener('input', () => {
-        const activeCategory = document.querySelector('.filter-btn.active').dataset.category;
-        renderItems(activeCategory, searchInput.value);
-      });
-      
-      // Add Item button
-      document.getElementById('addItemBtn').addEventListener('click', () => {
-        showPasswordOverlay('add');
-      });
-      
-      // Modal events
-      document.getElementById('closeModal').addEventListener('click', closeModal);
-      document.getElementById('cancelForm').addEventListener('click', closeModal);
-      document.getElementById('itemForm').addEventListener('submit', saveItem);
-      
-      // Password events
-      document.getElementById('cancelPassword').addEventListener('click', hidePasswordOverlay);
-      document.getElementById('submitPassword').addEventListener('click', checkPassword);
-      document.getElementById('passwordInput').addEventListener('keyup', e => {
-        if (e.key === 'Enter') {
-          checkPassword();
-        }
-      });
-      
-      // Initial setup
-      setupFilterButtons();
-      renderItems();
-    }
-    
-    // Start the app
-    document.addEventListener('DOMContentLoaded', initApp);
-  </script>
-</body>
+
+      // Start the app
+      document.addEventListener("DOMContentLoaded", initApp);
+    </script>
+  </body>
 </html>
